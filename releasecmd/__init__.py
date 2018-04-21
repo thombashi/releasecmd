@@ -27,6 +27,8 @@ class ReleaseCommand(setuptools.Command):
         ('dry-run', None, 'do no harm'),
     ]
 
+    __DIST_DIR_NAME = "dist"
+
     def initialize_options(self):
         self.dry_run = False
 
@@ -58,18 +60,17 @@ class ReleaseCommand(setuptools.Command):
 
         version_regexp = re.compile(re.escape(version))
         upload_file_list = []
-        dist_dir = "dist"
 
-        for filename in os.listdir(dist_dir):
+        for filename in os.listdir(self.__DIST_DIR_NAME):
             if not version_regexp.search(filename):
                 continue
 
-            upload_file_list.append(os.path.join(dist_dir, filename))
+            upload_file_list.append(os.path.join(self.__DIST_DIR_NAME, filename))
 
         if not upload_file_list:
             sys.stderr.write(
                 "file not found in '{dir:s}/' that matches version ({version:s}) to upload\n".format(
-                    dir=dist_dir, version=version))
+                    dir=self.__DIST_DIR_NAME, version=version))
             sys.exit(errno.ENOENT)
 
         print("[upload packages to PyPI]")
