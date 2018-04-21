@@ -26,9 +26,6 @@ with io.open(os.path.join(MODULE_NAME, "__version__.py"), encoding=ENCODING) as 
 with io.open("README.rst", encoding=ENCODING) as f:
     LONG_DESCRIPTION = f.read()
 
-with open(os.path.join(REQUIREMENT_DIR, "build_requirements.txt")) as f:
-    BUILD_REQUIRES = [line.strip() for line in f if line.strip()]
-
 SETUPTOOLS_REQUIRES = ["setuptools>=20.2.2"]
 
 setuptools.setup(
@@ -53,7 +50,7 @@ setuptools.setup(
     install_requires=SETUPTOOLS_REQUIRES,
     setup_requires=SETUPTOOLS_REQUIRES,
     extras_require={
-        "build": BUILD_REQUIRES,
+        "build": "wheel",
     },
 
     classifiers=[
