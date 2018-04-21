@@ -42,6 +42,8 @@ class ReleaseCommand(setuptools.Command):
         3. upload package files to PyPI by using twine
         """
 
+        self.__validate_dist_dir()
+
         pkg_info = {}
 
         version_file_path = self.__find_version_file()
@@ -80,6 +82,13 @@ class ReleaseCommand(setuptools.Command):
         else:
             subprocess.call(command, shell=True)
 
+    def __validate_dist_dir(self):
+        if os.path.isdir(self.__DIST_DIR_NAME):
+            return
+
+        sys.stderr.write("directory not found: {:s}/\n".format(self.__DIST_DIR_NAME))
+        sys.exit(errno.ENOENT)
+
     def __validate_version(self, version):
         from pkg_resources import parse_version
         from pkg_resources.extern.packaging.version import Version, LegacyVersion
@@ -108,7 +117,6 @@ class ReleaseCommand(setuptools.Command):
             return_code = subprocess.call(command, shell=True)
             if return_code != 0:
                 sys.exit(return_code)
-
 
     @staticmethod
     def __find_version_file():
