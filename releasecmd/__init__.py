@@ -58,7 +58,7 @@ class ReleaseCommand(setuptools.Command):
 
         tag = "v{}".format(version)
 
-        print("Pushing git tags: {}".format(tag))
+        print("[pushing git tags: {}]".format(tag))
 
         command = "git tag {}".format(tag)
         if self.dry_run:
@@ -90,6 +90,7 @@ class ReleaseCommand(setuptools.Command):
             sys.stderr.write("file not found to upload\n")
             sys.exit(errno.ENOENT)
 
+        print("[upload packages to PyPI: {}]".format(tag))
         command = "twine upload {:s}".format(" ".join(upload_file_list))
         if self.dry_run:
             print(command)
