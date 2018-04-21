@@ -38,7 +38,9 @@ setuptools.setup(
 
     author=pkg_info["__author__"],
     author_email=pkg_info["__email__"],
-    description="Release command for setuptools.setup",
+    description=(
+        "Release command for setuptools.setup which create a tag and push, "
+        "and upload packages to PyPI"),
     include_package_data=True,
     keywords=[""],
     license=pkg_info["__license__"],
