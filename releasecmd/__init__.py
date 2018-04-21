@@ -57,23 +57,8 @@ class ReleaseCommand(setuptools.Command):
 
         version = pkg_info["__version__"]
         self.__validate_version(version)
-
         self.__push_git_tag(version)
-
-        version_regexp = re.compile(re.escape(version))
-        upload_file_list = []
-
-        for filename in os.listdir(self.__DIST_DIR_NAME):
-            if not version_regexp.search(filename):
-                continue
-
-            upload_file_list.append(os.path.join(self.__DIST_DIR_NAME, filename))
-
-        if not upload_file_list:
-            sys.stderr.write(
-                "file not found in '{dir:s}/' that matches version ({version:s}) to upload\n".format(
-                    dir=self.__DIST_DIR_NAME, version=version))
-            sys.exit(errno.ENOENT)
+        upload_file_list = self.__get_upload_file_list(version)
 
         print("[upload packages to PyPI]")
         command = "twine upload {:s}".format(" ".join(upload_file_list))
@@ -117,6 +102,24 @@ class ReleaseCommand(setuptools.Command):
             return_code = subprocess.call(command, shell=True)
             if return_code != 0:
                 sys.exit(return_code)
+
+    def __get_upload_file_list(self, version):
+        version_regexp = re.compile(re.escape(version))
+        upload_file_list = []
+
+        for filename in os.listdir(self.__DIST_DIR_NAME):
+            if not version_regexp.search(filename):
+                continue
+
+            upload_file_list.append(os.path.join(self.__DIST_DIR_NAME, filename))
+
+        if not upload_file_list:
+            sys.stderr.write(
+                "file not found in '{dir:s}/' that matches version ({version:s}) to upload\n".format(
+                    dir=self.__DIST_DIR_NAME, version=version))
+            sys.exit(errno.ENOENT)
+
+        return upload_file_list
 
     @staticmethod
     def __find_version_file():
