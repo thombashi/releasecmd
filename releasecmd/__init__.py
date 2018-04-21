@@ -102,9 +102,17 @@ class ReleaseCommand(setuptools.Command):
 
     @staticmethod
     def __find_version_file():
+        exclude_regexp_list = [
+            re.compile("/build/.+"),
+            re.compile(re.escape("/.eggs/")),
+        ]
+
         for root, dirs, files in os.walk('.'):
             for filename in files:
                 if filename != _VERSION_FILE_NAME:
+                    continue
+
+                if any([regexp.search(root) for regexp in exclude_regexp_list]):
                     continue
 
                 return os.path.join(root, filename)
