@@ -46,14 +46,7 @@ class ReleaseCommand(setuptools.Command):
         version = self.__get_version()
         self.__validate_version(version)
         self.__push_git_tag(version)
-        upload_file_list = self.__get_upload_file_list(version)
-
-        print("[upload packages to PyPI]")
-        command = "twine upload {:s}".format(" ".join(upload_file_list))
-        if self.dry_run:
-            print(command)
-        else:
-            subprocess.call(command, shell=True)
+        self.__upload_package(self.__get_upload_file_list(version))
 
     def __validate_dist_dir(self):
         if os.path.isdir(self.__DIST_DIR_NAME):
@@ -123,6 +116,14 @@ class ReleaseCommand(setuptools.Command):
             sys.exit(errno.ENOENT)
 
         return upload_file_list
+
+    def __upload_package(self, upload_file_list):
+        print("[upload packages to PyPI]")
+        command = "twine upload {:s}".format(" ".join(upload_file_list))
+        if self.dry_run:
+            print(command)
+        else:
+            subprocess.call(command, shell=True)
 
     @staticmethod
     def __find_version_file():
