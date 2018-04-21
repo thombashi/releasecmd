@@ -54,25 +54,7 @@ class ReleaseCommand(setuptools.Command):
         version = pkg_info["__version__"]
         self.__validate_version(version)
 
-        tag = "v{}".format(version)
-
-        print("[pushing git tags: {}]".format(tag))
-
-        command = "git tag {}".format(tag)
-        if self.dry_run:
-            print(command)
-        else:
-            return_code = subprocess.call(command, shell=True)
-            if return_code != 0:
-                sys.exit(return_code)
-
-        command = "git push --tags"
-        if self.dry_run:
-            print(command)
-        else:
-            return_code = subprocess.call(command, shell=True)
-            if return_code != 0:
-                sys.exit(return_code)
+        self.__push_git_tag(version)
 
         version_regexp = re.compile(re.escape(version))
         upload_file_list = []
@@ -104,6 +86,27 @@ class ReleaseCommand(setuptools.Command):
         if not isinstance(parse_version(version), Version):
             sys.stderr.write("invalid version string: {}\n".format(version))
             sys.exit(errno.EINVAL)
+
+    def __push_git_tag(self, version):
+        tag = "v{}".format(version)
+
+        print("[pushing git tags: {}]".format(tag))
+
+        command = "git tag {}".format(tag)
+        if self.dry_run:
+            print(command)
+        else:
+            return_code = subprocess.call(command, shell=True)
+            if return_code != 0:
+                sys.exit(return_code)
+
+        command = "git push --tags"
+        if self.dry_run:
+            print(command)
+        else:
+            return_code = subprocess.call(command, shell=True)
+            if return_code != 0:
+                sys.exit(return_code)
 
 
     @staticmethod
