@@ -93,7 +93,7 @@ class ReleaseCommand(setuptools.Command):
             sys.stderr.write("file not found to upload\n")
             sys.exit(errno.ENOENT)
 
-        print("[upload packages to PyPI: {}]".format(tag))
+        print("[upload packages to PyPI]")
         command = "twine upload {:s}".format(" ".join(upload_file_list))
         if self.dry_run:
             print(command)
