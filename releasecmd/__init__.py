@@ -40,9 +40,6 @@ class ReleaseCommand(setuptools.Command):
         3. upload package files to PyPI by using twine
         """
 
-        from pkg_resources import parse_version
-        from pkg_resources.extern.packaging.version import Version, LegacyVersion
-
         pkg_info = {}
 
         version_file_path = self.__find_version_file()
@@ -55,9 +52,7 @@ class ReleaseCommand(setuptools.Command):
             exec(f.read(), pkg_info)
 
         version = pkg_info["__version__"]
-        if not isinstance(parse_version(version), Version):
-            sys.stderr.write("invalid version string: {}\n".format(version))
-            sys.exit(errno.EINVAL)
+        self.__validate_version(version)
 
         tag = "v{}".format(version)
 
@@ -101,6 +96,15 @@ class ReleaseCommand(setuptools.Command):
             print(command)
         else:
             subprocess.call(command, shell=True)
+
+    def __validate_version(self, version):
+        from pkg_resources import parse_version
+        from pkg_resources.extern.packaging.version import Version, LegacyVersion
+
+        if not isinstance(parse_version(version), Version):
+            sys.stderr.write("invalid version string: {}\n".format(version))
+            sys.exit(errno.EINVAL)
+
 
     @staticmethod
     def __find_version_file():
