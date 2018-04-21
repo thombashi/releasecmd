@@ -21,10 +21,12 @@ _VERSION_FILE_NAME = "__version__.py"
 
 class ReleaseCommand(setuptools.Command):
     # command class must provide 'user_options' attribute (a list of tuples)
-    user_options = []
+    user_options = [
+        ('dry-run', None, 'do no harm'),
+    ]
 
     def initialize_options(self):
-        pass
+        self.dry_run = False
 
     def finalize_options(self):
         pass
@@ -58,13 +60,21 @@ class ReleaseCommand(setuptools.Command):
 
         print("Pushing git tags: {}".format(tag))
 
-        return_code = subprocess.call("git tag {}".format(tag), shell=True)
-        if return_code != 0:
-            sys.exit(return_code)
+        command = "git tag {}".format(tag)
+        if self.dry_run:
+            print(command)
+        else:
+            return_code = subprocess.call(command, shell=True)
+            if return_code != 0:
+                sys.exit(return_code)
 
-        return_code = subprocess.call("git push --tags", shell=True)
-        if return_code != 0:
-            sys.exit(return_code)
+        command = "git push --tags"
+        if self.dry_run:
+            print(command)
+        else:
+            return_code = subprocess.call(command, shell=True)
+            if return_code != 0:
+                sys.exit(return_code)
 
         version_regexp = re.compile(re.escape(version))
         upload_file_list = []
@@ -80,7 +90,11 @@ class ReleaseCommand(setuptools.Command):
             sys.stderr.write("file not found to upload\n")
             sys.exit(errno.ENOENT)
 
-        subprocess.call("twine upload {:s}".format(" ".join(upload_file_list)), shell=True)
+        command = "twine upload {:s}".format(" ".join(upload_file_list))
+        if self.dry_run:
+            print(command)
+        else:
+            subprocess.call(command, shell=True)
 
     @staticmethod
     def __find_version_file():
