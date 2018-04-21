@@ -49,6 +49,7 @@ class ReleaseCommand(setuptools.Command):
         if not version_file_path:
             sys.stderr.write("{} not found\n".format(_VERSION_FILE_NAME))
             sys.exit(errno.ENOENT)
+        print("[reading {}]".format(version_file_path))
 
         with io.open(version_file_path, encoding="utf8") as f:
             exec(f.read(), pkg_info)
