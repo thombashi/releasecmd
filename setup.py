@@ -26,7 +26,7 @@ with io.open(os.path.join(MODULE_NAME, "__version__.py"), encoding=ENCODING) as 
 with io.open("README.rst", encoding=ENCODING) as f:
     LONG_DESCRIPTION = f.read()
 
-SETUPTOOLS_REQUIRES = ["setuptools>=20.2.2"]
+SETUPTOOLS_REQUIRES = ["setuptools>=38.3.0"]
 
 setuptools.setup(
     name=MODULE_NAME,
