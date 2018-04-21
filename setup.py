@@ -20,7 +20,7 @@ ENCODING = "utf8"
 pkg_info = {}
 
 
-with io.open(os.path.join(MODULE_NAME, "__version__.py"), encoding=ENCODING) as f:
+with open(os.path.join(MODULE_NAME, "__version__.py")) as f:
     exec(f.read(), pkg_info)
 
 with io.open("README.rst", encoding=ENCODING) as f:
