@@ -90,7 +90,9 @@ class ReleaseCommand(setuptools.Command):
             upload_file_list.append(os.path.join(dist_dir, filename))
 
         if not upload_file_list:
-            sys.stderr.write("file not found to upload\n")
+            sys.stderr.write(
+                "file not found in '{dir:s}/' that matches version ({version:s}) to upload\n".format(
+                    dir=dist_dir, version=version))
             sys.exit(errno.ENOENT)
 
         print("[upload packages to PyPI]")
