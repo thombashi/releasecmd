@@ -43,19 +43,7 @@ class ReleaseCommand(setuptools.Command):
         """
 
         self.__validate_dist_dir()
-
-        pkg_info = {}
-
-        version_file_path = self.__find_version_file()
-        if not version_file_path:
-            sys.stderr.write("{} not found\n".format(_VERSION_FILE_NAME))
-            sys.exit(errno.ENOENT)
-        print("[reading {}]".format(version_file_path))
-
-        with io.open(version_file_path, encoding="utf8") as f:
-            exec(f.read(), pkg_info)
-
-        version = pkg_info["__version__"]
+        version = self.__get_version()
         self.__validate_version(version)
         self.__push_git_tag(version)
         upload_file_list = self.__get_upload_file_list(version)
@@ -81,6 +69,21 @@ class ReleaseCommand(setuptools.Command):
         if not isinstance(parse_version(version), Version):
             sys.stderr.write("invalid version string: {}\n".format(version))
             sys.exit(errno.EINVAL)
+
+    def __get_version(self):
+        pkg_info = {}
+        version_file_path = self.__find_version_file()
+
+        if not version_file_path:
+            sys.stderr.write("{} not found\n".format(_VERSION_FILE_NAME))
+            sys.exit(errno.ENOENT)
+
+        print("[reading {}]".format(version_file_path))
+
+        with io.open(version_file_path, encoding="utf8") as f:
+            exec(f.read(), pkg_info)
+
+        return pkg_info["__version__"]
 
     def __push_git_tag(self, version):
         tag = "v{}".format(version)
