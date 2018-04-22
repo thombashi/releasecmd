@@ -43,10 +43,19 @@ class ReleaseCommand(setuptools.Command):
         """
 
         self.__validate_dist_dir()
+
         version = self.__get_version()
         self.__validate_version(version)
+
+        upload_file_list = self.__get_upload_file_list(version)
+        if not upload_file_list:
+            sys.stderr.write(
+                "file not found in '{dir:s}/' that matches version ({version:s}) to upload\n".format(
+                    dir=self.__DIST_DIR_NAME, version=version))
+            sys.exit(errno.ENOENT)
+
         self.__push_git_tag(version)
-        self.__upload_package(self.__get_upload_file_list(version))
+        self.__upload_package(upload_file_list)
 
     def __validate_dist_dir(self):
         if os.path.isdir(self.__DIST_DIR_NAME):
@@ -108,12 +117,6 @@ class ReleaseCommand(setuptools.Command):
                 continue
 
             upload_file_list.append(os.path.join(self.__DIST_DIR_NAME, filename))
-
-        if not upload_file_list:
-            sys.stderr.write(
-                "file not found in '{dir:s}/' that matches version ({version:s}) to upload\n".format(
-                    dir=self.__DIST_DIR_NAME, version=version))
-            sys.exit(errno.ENOENT)
 
         return upload_file_list
 
