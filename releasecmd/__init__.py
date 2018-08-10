@@ -1,8 +1,8 @@
 # encoding: utf-8
 
-'''
+"""
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
-'''
+"""
 
 from __future__ import print_function, unicode_literals
 
@@ -24,9 +24,7 @@ class ReleaseCommand(setuptools.Command):
     description = "create a tag and push, and upload packages to PyPI"
 
     # command class must provide 'user_options' attribute (a list of tuples)
-    user_options = [
-        ('dry-run', None, 'do no harm'),
-    ]
+    user_options = [("dry-run", None, "do no harm")]
 
     __DIST_DIR_NAME = "dist"
 
@@ -52,7 +50,9 @@ class ReleaseCommand(setuptools.Command):
         if not upload_file_list:
             sys.stderr.write(
                 "file not found in '{dir:s}/' that matches version ({version:s}) to upload\n".format(
-                    dir=self.__DIST_DIR_NAME, version=version))
+                    dir=self.__DIST_DIR_NAME, version=version
+                )
+            )
             sys.exit(errno.ENOENT)
 
         self.__push_git_tag(version)
@@ -131,12 +131,9 @@ class ReleaseCommand(setuptools.Command):
 
     @staticmethod
     def __find_version_file():
-        exclude_regexp_list = [
-            re.compile("/build/.+"),
-            re.compile(re.escape("/.eggs/")),
-        ]
+        exclude_regexp_list = [re.compile("/build/.+"), re.compile(re.escape("/.eggs/"))]
 
-        for root, dirs, files in os.walk('.'):
+        for root, dirs, files in os.walk("."):
             for filename in files:
                 if filename != _VERSION_FILE_NAME:
                     continue
