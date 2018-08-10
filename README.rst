@@ -1,7 +1,17 @@
 releasecmd
 ============================================
-Release command class (``ReleaseCommand``) for ``setuptools.setup``.
-``ReleaseCommand`` does the following:
+.. image:: https://badge.fury.io/py/releasecmd.svg
+    :target: https://badge.fury.io/py/releasecmd
+
+.. image:: https://img.shields.io/pypi/pyversions/releasecmd.svg
+   :target: https://pypi.python.org/pypi/releasecmd
+
+Summary
+---------
+``releasecmd`` will add ``release`` subcommand to
+``setup.py`` (``setuptools.setup``) by ``releasecmd.ReleaseCommand`` class.
+The class is implemented as a subclass of ``setuptools.Command`` class.
+The ``release`` subcommand does the following:
 
 1. create a git tag from version information in ``__version__.py``
 2. push git tags
