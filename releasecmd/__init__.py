@@ -24,11 +24,15 @@ class ReleaseCommand(setuptools.Command):
     description = "create a Git tag and push, and then upload packages to PyPI"
 
     # command class must provide 'user_options' attribute (a list of tuples)
-    user_options = [("dry-run", None, "do no harm")]
+    user_options = [
+        ("skip-tagging", None, "skip a git tag creation"),
+        ("dry-run", None, "do no harm"),
+    ]
 
     __DIST_DIR_NAME = "dist"
 
     def initialize_options(self):
+        self.skip_tagging = False
         self.dry_run = False
 
     def finalize_options(self):
@@ -101,7 +105,10 @@ class ReleaseCommand(setuptools.Command):
         tag = "v{}".format(version)
 
         print("[pushing git tags: {}]".format(tag))
-        self.__call("git tag {}".format(tag))
+
+        if not self.skip_tagging:
+            self.__call("git tag {}".format(tag))
+
         self.__call("git push --tags")
 
     def __get_upload_file_list(self, version):
