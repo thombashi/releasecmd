@@ -21,7 +21,7 @@ _VERSION_FILE_NAME = "__version__.py"
 
 
 class ReleaseCommand(setuptools.Command):
-    description = "create a tag and push, and upload packages to PyPI"
+    description = "create a Git tag and push, and then upload packages to PyPI"
 
     # command class must provide 'user_options' attribute (a list of tuples)
     user_options = [("dry-run", None, "do no harm")]
