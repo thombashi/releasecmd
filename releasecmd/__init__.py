@@ -88,26 +88,21 @@ class ReleaseCommand(setuptools.Command):
 
         return pkg_info["__version__"]
 
+    def __call(self, command):
+        if self.dry_run:
+            print(command)
+            return
+
+        return_code = subprocess.call(command, shell=True)
+        if return_code != 0:
+            sys.exit(return_code)
+
     def __push_git_tag(self, version):
         tag = "v{}".format(version)
 
         print("[pushing git tags: {}]".format(tag))
-
-        command = "git tag {}".format(tag)
-        if self.dry_run:
-            print(command)
-        else:
-            return_code = subprocess.call(command, shell=True)
-            if return_code != 0:
-                sys.exit(return_code)
-
-        command = "git push --tags"
-        if self.dry_run:
-            print(command)
-        else:
-            return_code = subprocess.call(command, shell=True)
-            if return_code != 0:
-                sys.exit(return_code)
+        self.__call("git tag {}".format(tag))
+        self.__call("git push --tags")
 
     def __get_upload_file_list(self, version):
         version_regexp = re.compile(re.escape(version))
@@ -123,11 +118,7 @@ class ReleaseCommand(setuptools.Command):
 
     def __upload_package(self, upload_file_list):
         print("[upload packages to PyPI]")
-        command = "twine upload {:s}".format(" ".join(upload_file_list))
-        if self.dry_run:
-            print(command)
-        else:
-            subprocess.call(command, shell=True)
+        self.__call("twine upload {:s}".format(" ".join(upload_file_list)))
 
     @staticmethod
     def __find_version_file():
