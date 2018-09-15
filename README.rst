@@ -4,7 +4,7 @@ releasecmd
     :target: https://badge.fury.io/py/releasecmd
 
 .. image:: https://img.shields.io/pypi/pyversions/releasecmd.svg
-   :target: https://pypi.python.org/pypi/releasecmd
+   :target: https://pypi.org/project/releasecmd
 
 Summary
 ---------
