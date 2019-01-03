@@ -28,6 +28,17 @@ Example
     [reading ./typepy/__version__.py]
     [pushing git tags: v0.0.26]
     [upload packages to PyPI]
+    ...
+
+Before execute, need to exist uploading binaries in ``dist/`` directory.
+
+Skip create a git tag
+---------------------------
+.. code-block::
+
+    $ python setup.py release --skip-tagging
+    running release
+    ...
 
 
 Dependencies
