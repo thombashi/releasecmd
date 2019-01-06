@@ -2,9 +2,11 @@ releasecmd
 ============================================
 .. image:: https://badge.fury.io/py/releasecmd.svg
     :target: https://badge.fury.io/py/releasecmd
+    :alt: PyPI package version
 
 .. image:: https://img.shields.io/pypi/pyversions/releasecmd.svg
-   :target: https://pypi.org/project/releasecmd
+    :target: https://pypi.org/project/releasecmd
+    :alt: Supported Python versions
 
 Summary
 ---------
