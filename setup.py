@@ -36,14 +36,16 @@ setuptools.setup(
     author=pkg_info["__author__"],
     author_email=pkg_info["__email__"],
     description=(
-        "Release command for setuptools.setup which create a tag and push, "
-        "and upload packages to PyPI"),
+        "releasecmd is a release subcommand for setup.py (setuptools.setup)."
+        " the subcommand create a git tag and push, and upload packages to PyPI."
+    ),
     include_package_data=True,
     keywords=[""],
     license=pkg_info["__license__"],
     long_description=LONG_DESCRIPTION,
     packages=setuptools.find_packages(exclude=["test*"]),
     project_urls={
+        "Source": REPOSITORY_URL,
         "Tracker": "{:s}/issues".format(REPOSITORY_URL),
     },
 
@@ -56,6 +58,7 @@ setuptools.setup(
 
     classifiers=[
         "Development Status :: 3 - Alpha",
+        "Intended Audience :: Developers",
         "Intended Audience :: Information Technology",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
@@ -68,4 +71,5 @@ setuptools.setup(
         "Programming Language :: Python :: 3.7",
         "Topic :: Software Development :: Libraries",
         "Topic :: Software Development :: Libraries :: Python Modules",
+        "Topic :: Utilities",
     ])
