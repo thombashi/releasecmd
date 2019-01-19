@@ -6,7 +6,6 @@
 
 from __future__ import print_function, unicode_literals
 
-from .__version__ import __author__, __copyright__, __email__, __license__, __version__
 import errno
 import io
 import os
@@ -15,6 +14,8 @@ import subprocess
 import sys
 
 import setuptools
+
+from .__version__ import __author__, __copyright__, __email__, __license__, __version__
 
 
 _VERSION_FILE_NAME = "__version__.py"
