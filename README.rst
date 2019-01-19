@@ -10,12 +10,14 @@ releasecmd
 
 Summary
 ---------
-``releasecmd`` will add ``release`` subcommand to
-``setup.py`` (``setuptools.setup``) by ``releasecmd.ReleaseCommand`` class.
-The class is implemented as a subclass of ``setuptools.Command`` class.
-The ``release`` subcommand does the following:
+``releasecmd`` is a ``release`` subcommand for ``setup.py`` (``setuptools.setup``).
+The subcommand create a git tag and push, and upload packages to ``PyPI``.
 
-1. create a git tag from version information in ``__version__.py``
+The subcommand class (``releasecmd.ReleaseCommand``) is implemented as
+a subclass of ``setuptools.Command`` class.
+The ``release`` subcommand does the followings:
+
+1. create a git tag from the package version information
 2. push git tags
 3. upload package files to PyPI by using ``twine``
 
