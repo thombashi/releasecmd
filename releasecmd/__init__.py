@@ -105,11 +105,11 @@ class ReleaseCommand(setuptools.Command):
     def __push_git_tag(self, version):
         tag = "v{}".format(version)
 
-        print("[pushing git tags: {}]".format(tag))
-
         if not self.skip_tagging:
+            print("[create a git tag: {}]".format(tag))
             self.__call("git tag {}".format(tag))
 
+        print("[pushing git tags: {}]".format(tag))
         self.__call("git push --tags")
 
     def __get_upload_file_list(self, version):
