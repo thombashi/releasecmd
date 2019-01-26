@@ -49,7 +49,7 @@ setuptools.setup(
         " the subcommand create a git tag and push, and upload packages to PyPI."
     ),
     include_package_data=True,
-    keywords=[""],
+    keywords=["release", "setuptools"],
     license=pkg_info["__license__"],
     long_description=LONG_DESCRIPTION,
     packages=setuptools.find_packages(exclude=["test*"]),
@@ -58,7 +58,7 @@ setuptools.setup(
         "Tracker": "{:s}/issues".format(REPOSITORY_URL),
     },
 
-    python_requires='>=2.7,!=3.0.*,!=3.1.*,!=3.2.*',
+    python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*",
     install_requires=SETUPTOOLS_REQUIRES + ["twine"],
     setup_requires=SETUPTOOLS_REQUIRES,
     extras_require={
