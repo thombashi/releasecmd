@@ -28,6 +28,7 @@ class ReleaseCommand(setuptools.Command):
     user_options = [
         ("skip-tagging", None, "skip a git tag creation"),
         ("dry-run", None, "do no harm"),
+        ("sign", None, "make a GPG-signed tag"),
     ]
 
     __DIST_DIR_NAME = "dist"
@@ -35,6 +36,7 @@ class ReleaseCommand(setuptools.Command):
     def initialize_options(self):
         self.skip_tagging = False
         self.dry_run = False
+        self.sign = False
 
     def finalize_options(self):
         pass
@@ -107,7 +109,13 @@ class ReleaseCommand(setuptools.Command):
 
         if not self.skip_tagging:
             print("[create a git tag: {}]".format(tag))
-            self.__call("git tag {}".format(tag))
+            command_items = ["git", "tag"]
+            if self.sign:
+                command_items.append("-s")
+            command_items.append(tag)
+            command_items.extend(["-m", "'signed {} tag'".format(version)])
+
+            self.__call(" ".join(command_items))
 
         print("[pushing git tags: {}]".format(tag))
         self.__call("git push --tags")
