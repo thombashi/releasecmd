@@ -160,7 +160,7 @@ class ReleaseCommand(setuptools.Command):
     @staticmethod
     def __traverse_version_file():
         exclude_regexp_list = [re.compile("/build/.+"), re.compile(re.escape("/.eggs/"))]
-        ver_file_candidate_regexp = re.compile("^__.+__\.py$")
+        ver_file_candidate_regexp = re.compile("^_.+_\.py$")
 
         for root, dirs, files in os.walk("."):
             for filename in files:
