@@ -62,7 +62,7 @@ setuptools.setup(
     install_requires=SETUPTOOLS_REQUIRES + ["twine"],
     setup_requires=SETUPTOOLS_REQUIRES,
     extras_require={
-        "build": ["wheel"],
+        "build": ["twine", "wheel"],
     },
 
     classifiers=[
