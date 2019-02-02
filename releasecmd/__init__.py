@@ -87,7 +87,7 @@ class ReleaseCommand(setuptools.Command):
         pkg_info = {}
 
         if not filepath:
-            sys.stderr.write("{} not found\n".format(filepath))
+            print("require a file path", file=sys.stderr)
             sys.exit(errno.ENOENT)
 
         print("[get the version from {}]".format(filepath))
