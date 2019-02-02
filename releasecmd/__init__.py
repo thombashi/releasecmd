@@ -82,6 +82,7 @@ class ReleaseCommand(setuptools.Command):
             version = self.__extract_version_from_file(version_file)
 
             if version:
+                print("[get the version from {}]".format(version_file))
                 return version
 
         print("version not found in the curent directory", file=sys.stderr)
@@ -93,8 +94,6 @@ class ReleaseCommand(setuptools.Command):
         if not filepath:
             print("require a file path", file=sys.stderr)
             sys.exit(errno.ENOENT)
-
-        print("[get the version from {}]".format(filepath))
 
         with io.open(filepath, encoding="utf8") as f:
             try:
