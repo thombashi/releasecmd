@@ -29,6 +29,7 @@ Example
 .. code-block::
 
     $ python setup.py release
+    running release
     [get the version from ./releasecmd/__version__.py]
     [create a git tag: v0.0.15]
     [push git tags]
@@ -41,7 +42,8 @@ Create a GPG signed tag
 ---------------------------
 .. code-block::
 
-    $ python setup.py release --sign --dry-run
+    $ python setup.py release --sign
+    running release
     [get the version from ./releasecmd/__version__.py]
     [create a git tag with gpg signing: v0.0.15]
     [push git tags]
