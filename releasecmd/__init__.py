@@ -52,10 +52,11 @@ class ReleaseCommand(setuptools.Command):
 
         upload_file_list = self.__get_upload_file_list(version)
         if not upload_file_list:
-            sys.stderr.write(
-                "file not found in '{dir:s}/' that matches version ({version:s}) to upload\n".format(
+            print(
+                "file not found in '{dir:s}/' that matches version ({version:s}) to upload".format(
                     dir=self.__DIST_DIR_NAME, version=version
-                )
+                ),
+                file=sys.stderr,
             )
             sys.exit(errno.ENOENT)
 
@@ -66,7 +67,7 @@ class ReleaseCommand(setuptools.Command):
         if os.path.isdir(self.__DIST_DIR_NAME):
             return
 
-        sys.stderr.write("directory not found: {:s}/\n".format(self.__DIST_DIR_NAME))
+        print("directory not found: {:s}/".format(self.__DIST_DIR_NAME), file=sys.stderr)
         sys.exit(errno.ENOENT)
 
     def __validate_version(self, version):
@@ -74,7 +75,7 @@ class ReleaseCommand(setuptools.Command):
         from pkg_resources.extern.packaging.version import Version, LegacyVersion
 
         if not isinstance(parse_version(version), Version):
-            sys.stderr.write("invalid version string: {}\n".format(version))
+            print("invalid version string: {}".format(version), file=sys.stderr)
             sys.exit(errno.EINVAL)
 
     def __get_version(self):
