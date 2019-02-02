@@ -122,7 +122,7 @@ class ReleaseCommand(setuptools.Command):
 
             self.__call(" ".join(command_items))
 
-        print("[pushing git tags: {}]".format(tag))
+        print("[push git tags]")
         self.__call("git push --tags")
 
     def __get_upload_file_list(self, version):
