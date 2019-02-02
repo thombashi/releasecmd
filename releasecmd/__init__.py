@@ -81,19 +81,21 @@ class ReleaseCommand(setuptools.Command):
             sys.exit(errno.EINVAL)
 
     def __get_version(self):
-        pkg_info = {}
-        version_file_path = self.__find_version_file()
+        return self.__extract_version_from_file(self.__find_version_file())
 
-        if not version_file_path:
-            sys.stderr.write("{} not found\n".format(_VERSION_FILE_NAME))
+    def __extract_version_from_file(self, filepath):
+        pkg_info = {}
+
+        if not filepath:
+            sys.stderr.write("{} not found\n".format(filepath))
             sys.exit(errno.ENOENT)
 
-        print("[get the version from {}]".format(version_file_path))
+        print("[get the version from {}]".format(filepath))
 
-        with io.open(version_file_path, encoding="utf8") as f:
+        with io.open(filepath, encoding="utf8") as f:
             exec(f.read(), pkg_info)
 
-        return pkg_info["__version__"]
+        return pkg_info.get("__version__")
 
     def __call(self, command):
         if self.dry_run:
