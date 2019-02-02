@@ -18,9 +18,6 @@ import setuptools
 from .__version__ import __author__, __copyright__, __email__, __license__, __version__
 
 
-_VERSION_FILE_NAME = "__version__.py"
-
-
 class ReleaseCommand(setuptools.Command):
     description = "create a Git tag and push, and then upload packages to PyPI"
 
@@ -81,13 +78,14 @@ class ReleaseCommand(setuptools.Command):
             sys.exit(errno.EINVAL)
 
     def __get_version(self):
-        version = self.__extract_version_from_file(self.__find_version_file())
+        for version_file in self.__traverse_version_file():
+            version = self.__extract_version_from_file(version_file)
 
-        if version is None:
-            print("version not found in {}".format(self.__find_version_file()), file=sys.stderr)
-            sys.exit(errno.ENOENT)
+            if version:
+                return version
 
-        return version
+        print("version not found in the curent directory", file=sys.stderr)
+        sys.exit(errno.ENOENT)
 
     def __extract_version_from_file(self, filepath):
         pkg_info = {}
@@ -99,7 +97,10 @@ class ReleaseCommand(setuptools.Command):
         print("[get the version from {}]".format(filepath))
 
         with io.open(filepath, encoding="utf8") as f:
-            exec(f.read(), pkg_info)
+            try:
+                exec(f.read(), pkg_info)
+            except KeyError:
+                return None
 
         return pkg_info.get("__version__")
 
@@ -149,17 +150,18 @@ class ReleaseCommand(setuptools.Command):
         self.__call("twine upload {:s}".format(" ".join(upload_file_list)))
 
     @staticmethod
-    def __find_version_file():
+    def __traverse_version_file():
         exclude_regexp_list = [re.compile("/build/.+"), re.compile(re.escape("/.eggs/"))]
+        ver_file_candidate_regexp = re.compile("^__.+__\.py$")
 
         for root, dirs, files in os.walk("."):
             for filename in files:
-                if filename != _VERSION_FILE_NAME:
+                if ver_file_candidate_regexp.search(filename) is None:
                     continue
 
                 if any([exclude_regexp.search(root) for exclude_regexp in exclude_regexp_list]):
                     continue
 
-                return os.path.join(root, filename)
+                yield os.path.join(root, filename)
 
         return None
