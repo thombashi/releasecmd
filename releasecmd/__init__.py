@@ -88,7 +88,7 @@ class ReleaseCommand(setuptools.Command):
             sys.stderr.write("{} not found\n".format(_VERSION_FILE_NAME))
             sys.exit(errno.ENOENT)
 
-        print("[reading {}]".format(version_file_path))
+        print("[get the version from {}]".format(version_file_path))
 
         with io.open(version_file_path, encoding="utf8") as f:
             exec(f.read(), pkg_info)
@@ -97,7 +97,7 @@ class ReleaseCommand(setuptools.Command):
 
     def __call(self, command):
         if self.dry_run:
-            print(command)
+            print("dry run: {}".format(command))
             return
 
         return_code = subprocess.call(command, shell=True)
