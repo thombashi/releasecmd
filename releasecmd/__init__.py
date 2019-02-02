@@ -157,7 +157,7 @@ class ReleaseCommand(setuptools.Command):
                 if filename != _VERSION_FILE_NAME:
                     continue
 
-                if any([regexp.search(root) for regexp in exclude_regexp_list]):
+                if any([exclude_regexp.search(root) for exclude_regexp in exclude_regexp_list]):
                     continue
 
                 return os.path.join(root, filename)
