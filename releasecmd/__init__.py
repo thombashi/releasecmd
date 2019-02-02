@@ -154,7 +154,7 @@ class ReleaseCommand(setuptools.Command):
         return upload_file_list
 
     def __upload_package(self, upload_file_list):
-        print("[upload packages to PyPI]")
+        print("[upload the package to PyPI]")
         self.__call("twine upload {:s}".format(" ".join(upload_file_list)))
 
     @staticmethod
