@@ -50,7 +50,7 @@ class ReleaseCommand(setuptools.Command):
         version = self.__get_version()
         self.__validate_version(version)
 
-        upload_file_list = self.__get_upload_file_list(version)
+        upload_file_list = self.__get_upload_files(version)
         if not upload_file_list:
             print(
                 "file not found in '{dir:s}/' that matches version ({version:s}) to upload".format(
@@ -137,7 +137,7 @@ class ReleaseCommand(setuptools.Command):
         print("[push git tags]")
         self.__call("git push --tags")
 
-    def __get_upload_file_list(self, version):
+    def __get_upload_files(self, version):
         version_regexp = re.compile(re.escape(version))
         upload_file_list = []
 
