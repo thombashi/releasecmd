@@ -33,7 +33,7 @@ Example
     [get the version from ./releasecmd/__version__.py]
     [create a git tag: v0.0.15]
     [push git tags]
-    [upload packages to PyPI]
+    [upload the package to PyPI]
     ...
 
 Before execute, need to exist uploading binaries in ``dist/`` directory.
@@ -47,7 +47,7 @@ Create a GPG signed tag
     [get the version from ./releasecmd/__version__.py]
     [create a git tag with gpg signing: v0.0.15]
     [push git tags]
-    [upload packages to PyPI]
+    [upload the package to PyPI]
     ...
 
 Skip create a git tag
@@ -56,6 +56,9 @@ Skip create a git tag
 
     $ python setup.py release --skip-tagging
     running release
+    [get the version from ./releasecmd/__version__.py]
+    [push git tags]
+    [upload the package to PyPI]    
     ...
 
 
