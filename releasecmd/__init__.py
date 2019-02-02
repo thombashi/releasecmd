@@ -112,13 +112,12 @@ class ReleaseCommand(setuptools.Command):
             extra_log = ""
 
             if self.sign:
-                command_items.append("-s")
+                command_items.extend(["--sign", "-m", "'signed {} tag'".format(version)])
                 extra_log = " with gpg signing"
 
             print("[create a git tag{}: {}]".format(extra_log, tag))
 
             command_items.append(tag)
-            command_items.extend(["-m", "'signed {} tag'".format(version)])
 
             self.__call(" ".join(command_items))
 
