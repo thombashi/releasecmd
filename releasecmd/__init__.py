@@ -53,9 +53,10 @@ class ReleaseCommand(setuptools.Command):
         upload_file_list = self.__get_upload_files(version)
         if not upload_file_list:
             print(
-                "file not found in '{dir:s}/' that matches version ({version:s}) to upload".format(
-                    dir=self.__DIST_DIR_NAME, version=version
-                ),
+                (
+                    "package files not found in '{dir:s}/' that matches the version ({version:s}) "
+                    + "to upload"
+                ).format(dir=self.__DIST_DIR_NAME, version=version),
                 file=sys.stderr,
             )
             sys.exit(errno.ENOENT)
@@ -67,7 +68,10 @@ class ReleaseCommand(setuptools.Command):
         if os.path.isdir(self.__DIST_DIR_NAME):
             return
 
-        print("directory not found: {:s}/".format(self.__DIST_DIR_NAME), file=sys.stderr)
+        print(
+            "{:s}/ directory not found. build the package first.".format(self.__DIST_DIR_NAME),
+            file=sys.stderr,
+        )
         sys.exit(errno.ENOENT)
 
     def __validate_version(self, version):
