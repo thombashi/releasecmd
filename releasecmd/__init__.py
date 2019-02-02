@@ -95,6 +95,10 @@ class ReleaseCommand(setuptools.Command):
             print("require a file path", file=sys.stderr)
             sys.exit(errno.ENOENT)
 
+        if not os.path.isfile(filepath):
+            print("file not found: {}".format(filepath), file=sys.stderr)
+            sys.exit(errno.ENOENT)
+
         with io.open(filepath, encoding="utf8") as f:
             try:
                 exec(f.read(), pkg_info)
