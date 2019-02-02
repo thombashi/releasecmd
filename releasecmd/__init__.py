@@ -81,7 +81,13 @@ class ReleaseCommand(setuptools.Command):
             sys.exit(errno.EINVAL)
 
     def __get_version(self):
-        return self.__extract_version_from_file(self.__find_version_file())
+        version = self.__extract_version_from_file(self.__find_version_file())
+
+        if version is None:
+            print("version not found in {}".format(self.__find_version_file()), file=sys.stderr)
+            sys.exit(errno.ENOENT)
+
+        return version
 
     def __extract_version_from_file(self, filepath):
         pkg_info = {}
