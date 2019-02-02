@@ -108,10 +108,15 @@ class ReleaseCommand(setuptools.Command):
         tag = "v{}".format(version)
 
         if not self.skip_tagging:
-            print("[create a git tag: {}]".format(tag))
             command_items = ["git", "tag"]
+            extra_log = ""
+
             if self.sign:
                 command_items.append("-s")
+                extra_log = " with gpg signing"
+
+            print("[create a git tag{}: {}]".format(extra_log, tag))
+
             command_items.append(tag)
             command_items.extend(["-m", "'signed {} tag'".format(version)])
 
