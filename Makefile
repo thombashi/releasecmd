@@ -1,5 +1,4 @@
 PACKAGE := releasecmd
-BUILD_DIR := build
 
 
 .PHONY: build
@@ -7,18 +6,21 @@ build:
 	@make clean
 	@python setup.py build
 	@twine check dist/*
-	@rm -rf $(BUILD_DIR)/
+	@python setup.py clean --all
+	ls -lh dist/*
 
 .PHONY: clean
 clean:
 	@rm -rf $(PACKAGE)-*.*.*/ \
-		$(BUILD_DIR) \
 		dist/ \
+		pip-wheel-metadata/ \
 		.eggs/ \
 		.pytest_cache/ \
 		.tox/ \
 		**/*/__pycache__/ \
 		*.egg-info/
+	@python setup.py clean --all
+	@find . -not -path '*/\.*' -type f | grep -E .+\.py\.[a-z0-9]{32,}\.py$ | xargs -r rm
 
 .PHONY: fmt
 fmt:
@@ -29,4 +31,4 @@ fmt:
 .PHONY: release
 release:
 	@python setup.py release --sign
-	@rm -rf dist/
+	@make clean
