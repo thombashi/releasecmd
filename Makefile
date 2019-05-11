@@ -4,7 +4,7 @@ PACKAGE := releasecmd
 .PHONY: build
 build:
 	@make clean
-	@python setup.py build
+	@python setup.py sdist bdist_wheel
 	@twine check dist/*
 	@python setup.py clean --all
 	ls -lh dist/*
