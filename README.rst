@@ -58,12 +58,11 @@ Skip create a git tag
     running release
     [get the version from ./releasecmd/__version__.py]
     [push git tags]
-    [upload the package to PyPI]    
+    [upload the package to PyPI]
     ...
 
 
 Dependencies
 ============================================
-Python 2.7+ or 3.5+
-
-- `twine <https://twine.readthedocs.io/>`__
+- Python 3.5+
+    - `twine <https://twine.readthedocs.io/>`__
