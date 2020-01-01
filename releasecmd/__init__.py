@@ -109,7 +109,9 @@ class ReleaseCommand(setuptools.Command):
 
         return pkg_info.get("__version__")
 
-    def __call(self, command) -> None:
+    def __call(self, command: List[str]) -> None:
+        command = " ".join(command)
+
         if self.dry_run:
             print("dry run: {}".format(command))
             return
@@ -133,10 +135,10 @@ class ReleaseCommand(setuptools.Command):
 
             command_items.append(tag)
 
-            self.__call(" ".join(command_items))
+            self.__call(command_items)
 
         print("[push git tags]")
-        self.__call("git push --tags")
+        self.__call(["git", "push", "--tags"])
 
     def __get_upload_files(self, version: str) -> List[str]:
         version_regexp = re.compile(re.escape(version))
@@ -151,8 +153,8 @@ class ReleaseCommand(setuptools.Command):
         return upload_file_list
 
     def __upload_package(self, upload_file_list: List[str]) -> None:
-        self.__call("twine upload {:s}".format(" ".join(upload_file_list)))
         print("[upload packages to PyPI]")
+        self.__call(["twine", "upload"] + upload_file_list)
 
     @staticmethod
     def __traverse_version_file() -> Generator[Optional[str], None, None]:
