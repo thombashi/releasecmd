@@ -72,7 +72,7 @@ class ReleaseCommand(setuptools.Command):
 
     def __validate_version(self, version):
         from pkg_resources import parse_version
-        from pkg_resources.extern.packaging.version import Version, LegacyVersion
+        from pkg_resources.extern.packaging.version import Version
 
         if not isinstance(parse_version(version), Version):
             print("invalid version string: {}".format(version), file=sys.stderr)
