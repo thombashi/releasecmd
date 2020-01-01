@@ -87,7 +87,7 @@ class ReleaseCommand(setuptools.Command):
                 print("[get the version from {}]".format(version_file))
                 return version
 
-        print("version not found in the curent directory", file=sys.stderr)
+        print("version not found in the current directory", file=sys.stderr)
         sys.exit(errno.ENOENT)
 
     def __extract_version_from_file(self, filepath: Optional[str]) -> Optional[str]:
