@@ -58,7 +58,7 @@ class ReleaseCommand(setuptools.Command):
             )
             sys.exit(errno.ENOENT)
 
-        self.__push_git_tag(version)
+        self.__create_git_tag(version)
         self.__upload_package(upload_file_list)
 
     def __validate_dist_dir(self) -> None:
@@ -120,7 +120,7 @@ class ReleaseCommand(setuptools.Command):
         if return_code != 0:
             sys.exit(return_code)
 
-    def __push_git_tag(self, version: str) -> None:
+    def __create_git_tag(self, version: str) -> None:
         tag = "v{}".format(version)
 
         if not self.skip_tagging:
