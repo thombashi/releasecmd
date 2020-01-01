@@ -8,6 +8,7 @@ import os
 import re
 import subprocess
 import sys
+from typing import Dict, Generator, List, Optional
 
 import setuptools
 
@@ -26,15 +27,15 @@ class ReleaseCommand(setuptools.Command):
 
     __DIST_DIR_NAME = "dist"
 
-    def initialize_options(self):
+    def initialize_options(self) -> None:
         self.skip_tagging = False
         self.dry_run = False
         self.sign = False
 
-    def finalize_options(self):
+    def finalize_options(self) -> None:
         pass
 
-    def run(self):
+    def run(self) -> None:
         """
         1. create a git tag from version information in __version__.py
         2. push git tags
@@ -60,7 +61,7 @@ class ReleaseCommand(setuptools.Command):
         self.__push_git_tag(version)
         self.__upload_package(upload_file_list)
 
-    def __validate_dist_dir(self):
+    def __validate_dist_dir(self) -> None:
         if os.path.isdir(self.__DIST_DIR_NAME):
             return
 
@@ -70,7 +71,7 @@ class ReleaseCommand(setuptools.Command):
         )
         sys.exit(errno.ENOENT)
 
-    def __validate_version(self, version):
+    def __validate_version(self, version: str) -> None:
         from pkg_resources import parse_version
         from pkg_resources.extern.packaging.version import Version
 
@@ -78,7 +79,7 @@ class ReleaseCommand(setuptools.Command):
             print("invalid version string: {}".format(version), file=sys.stderr)
             sys.exit(errno.EINVAL)
 
-    def __get_version(self):
+    def __get_version(self) -> str:
         for version_file in self.__traverse_version_file():
             version = self.__extract_version_from_file(version_file)
 
@@ -89,8 +90,8 @@ class ReleaseCommand(setuptools.Command):
         print("version not found in the curent directory", file=sys.stderr)
         sys.exit(errno.ENOENT)
 
-    def __extract_version_from_file(self, filepath):
-        pkg_info = {}
+    def __extract_version_from_file(self, filepath: Optional[str]) -> Optional[str]:
+        pkg_info = {}  # type: Dict[str, str]
 
         if not filepath:
             print("require a file path", file=sys.stderr)
@@ -108,7 +109,7 @@ class ReleaseCommand(setuptools.Command):
 
         return pkg_info.get("__version__")
 
-    def __call(self, command):
+    def __call(self, command) -> None:
         if self.dry_run:
             print("dry run: {}".format(command))
             return
@@ -117,11 +118,11 @@ class ReleaseCommand(setuptools.Command):
         if return_code != 0:
             sys.exit(return_code)
 
-    def __push_git_tag(self, version):
+    def __push_git_tag(self, version: str) -> None:
         tag = "v{}".format(version)
 
         if not self.skip_tagging:
-            command_items = ["git", "tag"]
+            command_items = ["git", "tag"]  # type: List[str]
             extra_log = ""
 
             if self.sign:
@@ -137,9 +138,9 @@ class ReleaseCommand(setuptools.Command):
         print("[push git tags]")
         self.__call("git push --tags")
 
-    def __get_upload_files(self, version):
+    def __get_upload_files(self, version: str) -> List[str]:
         version_regexp = re.compile(re.escape(version))
-        upload_file_list = []
+        upload_file_list = []  # type: List[str]
 
         for filename in os.listdir(self.__DIST_DIR_NAME):
             if not version_regexp.search(filename):
@@ -149,14 +150,17 @@ class ReleaseCommand(setuptools.Command):
 
         return upload_file_list
 
-    def __upload_package(self, upload_file_list):
+    def __upload_package(self, upload_file_list: List[str]) -> None:
         print("[upload the package to PyPI]")
         self.__call("twine upload {:s}".format(" ".join(upload_file_list)))
 
     @staticmethod
-    def __traverse_version_file():
-        exclude_regexp_list = [re.compile("/build/.+"), re.compile(re.escape("/.eggs/"))]
-        ver_file_candidate_regexp = re.compile("^_.+_\.py$")
+    def __traverse_version_file() -> Generator[Optional[str], None, None]:
+        exclude_regexp_list = [
+            re.compile("/build/.+"),
+            re.compile(re.escape("/.eggs/")),
+        ]
+        ver_file_candidate_regexp = re.compile(r"^_.+_\.py$")
 
         for root, dirs, files in os.walk("."):
             for filename in files:
