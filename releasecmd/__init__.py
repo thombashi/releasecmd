@@ -166,6 +166,8 @@ class ReleaseCommand(setuptools.Command):
             if not pkg_regexp.search(filename):
                 continue
 
+            print("[create a .asc file for {}]".format(filename))
+
             self.__call(
                 ["gpg", "--detach-sign", "--armor"] + [os.path.join(self.__DIST_DIR_NAME, filename)]
             )
