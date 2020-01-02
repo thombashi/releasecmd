@@ -112,13 +112,13 @@ class ReleaseCommand(setuptools.Command):
         return pkg_info.get("__version__")
 
     def __call(self, command: List[str]) -> None:
-        command = " ".join(command)
+        command_str = " ".join(command)
 
         if self.dry_run:
-            print("dry run: {}".format(command))
+            print("dry run: {}".format(command_str))
             return
 
-        return_code = subprocess.call(command, shell=True)
+        return_code = subprocess.call(command_str, shell=True)
         if return_code != 0:
             sys.exit(return_code)
 
