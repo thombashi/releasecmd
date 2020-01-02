@@ -17,10 +17,12 @@ The subcommand class (``releasecmd.ReleaseCommand``) is implemented as
 a subclass of ``setuptools.Command`` class.
 The ``release`` subcommand does the followings:
 
-1. Find a file that defined the package version
-2. Create a git tag from the package version information
-3. Push git tags
-4. Upload package files to PyPI by using ``twine``
+1. Find a file that defined the package version (e.g. ``<package>/__init__.py``)
+2. Create ``.asc`` files if ``--sign`` option is specified
+3. Create a git tag from the package version information
+    - GPG signing to the git tag if ``--sign`` option is specified
+4. Push git tags
+5. Upload package files to PyPI by using ``twine``
 
 
 Example
@@ -36,29 +38,31 @@ Example
     [upload the package to PyPI]
     ...
 
-Before execute, need to exist uploading binaries in ``dist/`` directory.
+prerequisite: package binaries must bein in the ``dist/`` directory.
 
-Create a GPG signed tag
----------------------------
+Create a GPG signed tag and upload packages
+------------------------------------------------------
 .. code-block::
 
     $ python setup.py release --sign
     running release
     [get the version from ./releasecmd/__version__.py]
-    [create a git tag with gpg signing: v0.0.15]
+    [create a .asc file for releasecmd-0.1.0.tar.gz]
+    [create a .asc file for releasecmd-0.1.0-py2.py3-none-any.whl]
+    [create a git tag with gpg signing: v0.1.0]
     [push git tags]
-    [upload the package to PyPI]
+    [upload packages to PyPI]
     ...
 
-Skip create a git tag
----------------------------
+Skip create a git tag and upload packages
+------------------------------------------------------
 .. code-block::
 
     $ python setup.py release --skip-tagging
     running release
     [get the version from ./releasecmd/__version__.py]
     [push git tags]
-    [upload the package to PyPI]
+    [upload packages to PyPI]
     ...
 
 
@@ -66,3 +70,4 @@ Dependencies
 ============================================
 - Python 3.5+
     - `twine <https://twine.readthedocs.io/>`__
+- ``git``
