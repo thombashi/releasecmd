@@ -37,15 +37,17 @@ class ReleaseCommand(setuptools.Command):
 
     def run(self) -> None:
         """
-        1. create a git tag from version information in __version__.py
-        2. push git tags
-        3. upload package files to PyPI by using twine
+        1. create asc files (if specified --sign option)
+        2. create a git tag from version information in __version__.py
+        3. push git tags
+        4. upload package files to PyPI by using twine
         """
 
         self.__validate_dist_dir()
 
         version = self.__get_version()
         self.__validate_version(version)
+        self.__sign_package(version)
 
         upload_file_list = self.__get_upload_files(version)
         if not upload_file_list:
@@ -141,7 +143,9 @@ class ReleaseCommand(setuptools.Command):
         self.__call(["git", "push", "--tags"])
 
     def __get_upload_files(self, version: str) -> List[str]:
-        version_regexp = re.compile(re.escape(version))
+        version_regexp = re.compile(
+            r".+-{:s}.*(\.tar\.gz|\.whl)(\.asc$)?".format(re.escape(version))
+        )
         upload_file_list = []  # type: List[str]
 
         for filename in os.listdir(self.__DIST_DIR_NAME):
@@ -151,6 +155,20 @@ class ReleaseCommand(setuptools.Command):
             upload_file_list.append(os.path.join(self.__DIST_DIR_NAME, filename))
 
         return upload_file_list
+
+    def __sign_package(self, version: str) -> None:
+        if not self.sign:
+            return
+
+        pkg_regexp = re.compile(r".+-{:s}.*(\.tar\.gz$|\.whl$)".format(re.escape(version)))
+
+        for filename in os.listdir(self.__DIST_DIR_NAME):
+            if not pkg_regexp.search(filename):
+                continue
+
+            self.__call(
+                ["gpg", "--detach-sign", "--armor"] + [os.path.join(self.__DIST_DIR_NAME, filename)]
+            )
 
     def __upload_package(self, upload_file_list: List[str]) -> None:
         print("[upload packages to PyPI]")
