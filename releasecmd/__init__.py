@@ -23,6 +23,7 @@ class ReleaseCommand(setuptools.Command):
         ("skip-tagging", None, "skip a git tag creation"),
         ("dry-run", None, "do no harm"),
         ("sign", None, "make a GPG-signed tag"),
+        ("version=", None, "specify version manually"),
     ]
 
     __DIST_DIR_NAME = "dist"
@@ -31,6 +32,7 @@ class ReleaseCommand(setuptools.Command):
         self.skip_tagging = False
         self.dry_run = False
         self.sign = False
+        self.version = None
 
     def finalize_options(self) -> None:
         pass
@@ -82,6 +84,9 @@ class ReleaseCommand(setuptools.Command):
             sys.exit(errno.EINVAL)
 
     def __get_version(self) -> str:
+        if self.version:
+            return self.version
+
         for version_file in self.__traverse_version_file():
             version = self.__extract_version_from_file(version_file)
 
