@@ -40,6 +40,19 @@ Example
 
 prerequisite: package binaries must bein in the ``dist/`` directory.
 
+
+Specify version manually
+------------------------------------------------------
+You can specify a vesion manually by ``--version`` option even if ``./<package name>/__version__.py`` file does not exists.
+
+.. code-block::
+
+    $ python setup.py release --version 0.1.0
+    [create a git tag: v0.1.0]
+    [push git tags]
+    [upload packages to PyPI]
+
+
 Create a GPG signed tag and upload packages
 ------------------------------------------------------
 .. code-block::
