@@ -126,6 +126,7 @@ class ReleaseCommand(setuptools.Command):
 
         result = subprocess.run(command)
         if result.returncode != 0:
+            print(result.stderr, file=sys.stderr)
             sys.exit(result.returncode)
 
     def __create_git_tag(self, version: str) -> None:
