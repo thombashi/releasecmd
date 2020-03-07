@@ -24,6 +24,10 @@ release:
 	@tox -e release
 	@make clean
 
-.PHONY: setup
+.PHONY: release
 setup:
 	@python setup.py release --sign
+
+.PHONY: setup
+setup:
+	@pip install --upgrade -e . tox
