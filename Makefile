@@ -25,7 +25,7 @@ release:
 	@make clean
 
 .PHONY: release
-setup:
+release:
 	@python setup.py release --sign
 
 .PHONY: setup
