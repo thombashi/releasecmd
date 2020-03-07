@@ -26,4 +26,4 @@ release:
 
 .PHONY: setup
 setup:
-	@pip install --upgrade -e . tox
+	@python setup.py release --sign
