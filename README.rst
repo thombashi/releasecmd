@@ -25,9 +25,20 @@ The ``release`` subcommand does the followings:
 5. Upload package files to PyPI by using ``twine``
 
 
+release command options
+============================================
+::
+
+    Options for 'ReleaseCommand' command:
+    --skip-tagging  skip a git tag creation
+    --dry-run       do no harm
+    --sign          make a GPG-signed tag
+    --tag-template  specify git tag format. defaults to 'v{version}'.
+    --version       specify version manually
+
+
 Example
 ============================================
-
 .. code-block::
 
     $ python setup.py release
