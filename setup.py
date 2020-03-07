@@ -57,10 +57,6 @@ setuptools.setup(
     python_requires=">=3.5",
     install_requires=SETUPTOOLS_REQUIRES + ["twine"],
     setup_requires=SETUPTOOLS_REQUIRES,
-    extras_require={
-        "build": ["twine", "wheel"],
-    },
-
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
