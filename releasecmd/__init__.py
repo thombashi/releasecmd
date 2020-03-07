@@ -22,6 +22,7 @@ class ReleaseCommand(setuptools.Command):
         ("skip-tagging", None, "skip a git tag creation"),
         ("dry-run", None, "do no harm"),
         ("sign", None, "make a GPG-signed tag"),
+        ("tag-template=", None, "specify git tag format. defaults to 'v{version}'."),
         ("version=", None, "specify version manually"),
     ]
 
@@ -31,6 +32,7 @@ class ReleaseCommand(setuptools.Command):
         self.skip_tagging = False
         self.dry_run = False
         self.sign = False
+        self.tag_template = "v{version}"
         self.version = None
 
     def finalize_options(self) -> None:
@@ -127,7 +129,7 @@ class ReleaseCommand(setuptools.Command):
             sys.exit(result.returncode)
 
     def __create_git_tag(self, version: str) -> None:
-        tag = "v{}".format(version)
+        tag = self.tag_template.format(version=version)
 
         if not self.skip_tagging:
             command_items = ["git", "tag"]  # type: List[str]
