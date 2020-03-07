@@ -122,9 +122,9 @@ class ReleaseCommand(setuptools.Command):
             print("dry run: {}".format(command_str))
             return
 
-        return_code = subprocess.call(command_str, shell=True)
-        if return_code != 0:
-            sys.exit(return_code)
+        result = subprocess.run(command)
+        if result.returncode != 0:
+            sys.exit(result.returncode)
 
     def __create_git_tag(self, version: str) -> None:
         tag = "v{}".format(version)
