@@ -3,7 +3,6 @@
 """
 
 import errno
-import io
 import os
 import re
 import subprocess
@@ -108,7 +107,7 @@ class ReleaseCommand(setuptools.Command):
             print("file not found: {}".format(filepath), file=sys.stderr)
             sys.exit(errno.ENOENT)
 
-        with io.open(filepath, encoding="utf8") as f:
+        with open(filepath, encoding="utf8") as f:
             try:
                 exec(f.read(), pkg_info)
             except KeyError:

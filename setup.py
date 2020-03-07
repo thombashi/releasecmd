@@ -2,7 +2,6 @@
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
-import io
 import os.path
 
 import setuptools
@@ -28,7 +27,7 @@ def get_release_command_class():
 with open(os.path.join(MODULE_NAME, "__version__.py")) as f:
     exec(f.read(), pkg_info)
 
-with io.open("README.rst", encoding=ENCODING) as f:
+with open("README.rst", encoding=ENCODING) as f:
     LONG_DESCRIPTION = f.read()
 
 SETUPTOOLS_REQUIRES = ["setuptools>=38.3.0"]
