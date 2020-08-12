@@ -30,11 +30,11 @@ release command options
 ::
 
     Options for 'ReleaseCommand' command:
-    --skip-tagging  skip a git tag creation
-    --dry-run       do no harm
-    --sign          make a GPG-signed tag
-    --tag-template  specify git tag format. defaults to 'v{version}'.
-    --version       specify version manually
+      --skip-tagging  skip a git tag creation
+      --dry-run       do no harm
+      --sign          make a GPG-signed tag
+      --tag-template  specify git tag format. defaults to 'v{version}'.
+      --version       specify version manually
 
 
 Example
