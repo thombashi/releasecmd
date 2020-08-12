@@ -21,12 +21,8 @@ fmt:
 
 .PHONY: release
 release:
-	@tox -e release
-	@make clean
-
-.PHONY: release
-release:
 	@python setup.py release --sign
+	@make clean
 
 .PHONY: setup
 setup:
