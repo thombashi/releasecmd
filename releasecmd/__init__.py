@@ -188,6 +188,7 @@ class ReleaseCommand(setuptools.Command):
         exclude_regexp_list = [
             re.compile("/build/.+"),
             re.compile(re.escape("/.eggs/")),
+            re.compile(re.escape(".tox/")),
         ]
         ver_file_candidate_regexp = re.compile(r"^_.+_\.py$")
 
