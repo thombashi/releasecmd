@@ -31,8 +31,6 @@ with open(os.path.join(MODULE_NAME, "__version__.py")) as f:
 with open("README.rst", encoding=ENCODING) as f:
     LONG_DESCRIPTION = f.read()
 
-SETUPTOOLS_REQUIRES = ["setuptools>=38.3.0"]
-
 setuptools.setup(
     name=MODULE_NAME,
     version=pkg_info["__version__"],
@@ -51,8 +49,7 @@ setuptools.setup(
     packages=setuptools.find_packages(exclude=["test*"]),
     project_urls={"Source": REPOSITORY_URL, "Tracker": "{:s}/issues".format(REPOSITORY_URL)},
     python_requires=">=3.5",
-    install_requires=SETUPTOOLS_REQUIRES + ["twine"],
-    setup_requires=SETUPTOOLS_REQUIRES,
+    install_requires=["twine"],
     classifiers=[
         "Development Status :: 4 - Beta",
         "Framework :: Setuptools Plugin",
