@@ -132,22 +132,25 @@ class ReleaseCommand(setuptools.Command):
     def __create_git_tag(self, version: str) -> None:
         tag = self.tag_template.format(version=version)
 
-        if not self.skip_tagging:
-            command_items = ["git", "tag"]  # type: List[str]
-            extra_log = ""
+        if self.skip_tagging:
+            print("skip git tagging")
+            return
 
-            if self.sign:
-                command_items.extend(["--sign", "-m", "'GPG signed {} tag'".format(version)])
-                extra_log = " with gpg signing"
+        command_items = ["git", "tag"]  # type: List[str]
+        extra_log = ""
 
-            print("[create a git tag{}: {}]".format(extra_log, tag))
+        if self.sign:
+            command_items.extend(["--sign", "-m", "'GPG signed {} tag'".format(version)])
+            extra_log = " with gpg signing"
 
-            command_items.append(tag)
+        print("[create a git tag{}: {}]".format(extra_log, tag))
 
-            self.__call(command_items)
+        command_items.append(tag)
 
-            print("[push git tags]")
-            self.__call(["git", "push", "--tags"])
+        self.__call(command_items)
+
+        print("[push git tags]")
+        self.__call(["git", "push", "--tags"])
 
     def __get_upload_files(self, version: str) -> List[str]:
         version_regexp = re.compile(
