@@ -15,7 +15,7 @@ The subcommand create a git tag and push, and upload packages to ``PyPI``.
 
 The subcommand class (``releasecmd.ReleaseCommand``) is implemented as
 a subclass of ``setuptools.Command`` class.
-The ``release`` subcommand does the followings:
+The ``release`` subcommand will do the followings:
 
 1. Find a file that defined the package version (e.g. ``<package>/__init__.py``)
 2. Create ``.asc`` files if ``--sign`` option is specified
@@ -54,7 +54,7 @@ prerequisite: package binaries must bein in the ``dist/`` directory.
 
 Specify version manually
 ------------------------------------------------------
-You can specify a vesion manually by ``--version`` option even if ``./<package name>/__version__.py`` file does not exists.
+You can specify a vesion manually by ``--version`` option:
 
 .. code-block::
 
