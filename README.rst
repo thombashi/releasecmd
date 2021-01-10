@@ -93,5 +93,4 @@ Skip create a git tag and upload packages
 Dependencies
 ============================================
 - Python 3.5+
-    - `twine <https://twine.readthedocs.io/>`__
 - ``git``
