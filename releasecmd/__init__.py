@@ -146,8 +146,8 @@ class ReleaseCommand(setuptools.Command):
 
             self.__call(command_items)
 
-        print("[push git tags]")
-        self.__call(["git", "push", "--tags"])
+            print("[push git tags]")
+            self.__call(["git", "push", "--tags"])
 
     def __get_upload_files(self, version: str) -> List[str]:
         version_regexp = re.compile(
