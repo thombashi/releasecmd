@@ -33,6 +33,8 @@ release command options
       --skip-tagging  skip a git tag creation
       --dry-run       do no harm
       --sign          make a GPG-signed tag
+      --dir           specify a search root directory path. defaults to the
+                      current directory.
       --tag-template  specify git tag format. defaults to 'v{version}'.
       --version       specify version manually
 
