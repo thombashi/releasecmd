@@ -22,6 +22,7 @@ class ReleaseCommand(setuptools.Command):
         ("skip-tagging", None, "skip a git tag creation"),
         ("dry-run", None, "do no harm"),
         ("sign", None, "make a GPG-signed tag"),
+        ("dir=", None, "specify a search root directory path. defaults to the current directory."),
         ("tag-template=", None, "specify git tag format. defaults to 'v{version}'."),
         ("version=", None, "specify version manually"),
     ]
@@ -32,6 +33,7 @@ class ReleaseCommand(setuptools.Command):
         self.skip_tagging = False
         self.dry_run = False
         self.sign = False
+        self.dir = "."
         self.tag_template = "v{version}"
         self.version = None
 
@@ -186,8 +188,7 @@ class ReleaseCommand(setuptools.Command):
         print("[upload packages to PyPI]")
         self.__call(["twine", "upload"] + upload_file_list)
 
-    @staticmethod
-    def __traverse_version_file() -> Generator[Optional[str], None, None]:
+    def __traverse_version_file(self) -> Generator[Optional[str], None, None]:
         exclude_regexp_list = [
             re.compile("/build/.+"),
             re.compile(re.escape("/.eggs/")),
@@ -195,7 +196,7 @@ class ReleaseCommand(setuptools.Command):
         ]
         ver_file_candidate_regexp = re.compile(r"^_.+_\.py$")
 
-        for root, dirs, files in os.walk("."):
+        for root, dirs, files in os.walk(self.dir):
             for filename in files:
                 if ver_file_candidate_regexp.search(filename) is None:
                     continue
