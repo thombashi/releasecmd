@@ -25,7 +25,8 @@ class ReleaseCommand(setuptools.Command):
         (
             "search-dir=",
             None,
-            "specify a root directory path to search a version file. defaults to the current directory.",
+            "specify a root directory path to search a version file. "
+            "defaults to the current directory.",
         ),
         ("tag-template=", None, "specify git tag format. defaults to 'v{version}'."),
         ("version=", None, "specify version manually"),
@@ -101,7 +102,10 @@ class ReleaseCommand(setuptools.Command):
                 print("[get the version from {}]".format(version_file))
                 return version
 
-        print("[ERROR] version not found in the directory '{}'".format(self.search_dir), file=sys.stderr)
+        print(
+            "[ERROR] version not found in the directory '{}'".format(self.search_dir),
+            file=sys.stderr,
+        )
         sys.exit(errno.ENOENT)
 
     def __extract_version_from_file(self, filepath: Optional[str]) -> Optional[str]:
