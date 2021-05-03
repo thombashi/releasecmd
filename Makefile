@@ -22,7 +22,7 @@ fmt:
 
 .PHONY: release
 release:
-	@python setup.py release --sign
+	@$(PYTHON) setup.py release --sign
 	@make clean
 
 .PHONY: setup
