@@ -22,7 +22,11 @@ class ReleaseCommand(setuptools.Command):
         ("skip-tagging", None, "skip a git tag creation"),
         ("dry-run", None, "do no harm"),
         ("sign", None, "make a GPG-signed tag"),
-        ("dir=", None, "specify a search root directory path. defaults to the current directory."),
+        (
+            "search-dir=",
+            None,
+            "specify a root directory path to search a version file. defaults to the current directory.",
+        ),
         ("tag-template=", None, "specify git tag format. defaults to 'v{version}'."),
         ("version=", None, "specify version manually"),
     ]
@@ -33,7 +37,7 @@ class ReleaseCommand(setuptools.Command):
         self.skip_tagging = False
         self.dry_run = False
         self.sign = False
-        self.dir = "."
+        self.search_dir = "."
         self.tag_template = "v{version}"
         self.version = None  # type: Optional[str]
 
@@ -198,7 +202,7 @@ class ReleaseCommand(setuptools.Command):
         ]
         ver_file_candidate_regexp = re.compile(r"^_.+_\.py$")
 
-        for root, dirs, files in os.walk(self.dir):
+        for root, dirs, files in os.walk(self.search_dir):
             for filename in files:
                 if ver_file_candidate_regexp.search(filename) is None:
                     continue
