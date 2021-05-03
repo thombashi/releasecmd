@@ -126,9 +126,11 @@ class ReleaseCommand(setuptools.Command):
             print("dry run: {}".format(command_str))
             return
 
-        result = subprocess.run(command)
+        result = subprocess.run(command, stderr=subprocess.PIPE, encoding="utf8")
         if result.returncode != 0:
-            print(result.stderr, file=sys.stderr)
+            print("[ERROR] {}".format(command_str))
+            if result.stderr:
+                print(result.stderr, file=sys.stderr)
             sys.exit(result.returncode)
 
     def __create_git_tag(self, version: str) -> None:
