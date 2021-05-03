@@ -35,7 +35,7 @@ class ReleaseCommand(setuptools.Command):
         self.sign = False
         self.dir = "."
         self.tag_template = "v{version}"
-        self.version = None
+        self.version = None  # type: Optional[str]
 
     def finalize_options(self) -> None:
         pass
