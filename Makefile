@@ -1,4 +1,5 @@
 PACKAGE := releasecmd
+PYTHON := python3
 
 
 .PHONY: build
@@ -26,4 +27,5 @@ release:
 
 .PHONY: setup
 setup:
-	@pip install --upgrade -e . tox
+	@$(PYTHON) -m pip install -q --disable-pip-version-check --upgrade -e . tox
+	@$(PYTHON) -m pip check
