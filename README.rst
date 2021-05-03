@@ -33,8 +33,8 @@ release command options
       --skip-tagging  skip a git tag creation
       --dry-run       do no harm
       --sign          make a GPG-signed tag
-      --dir           specify a search root directory path. defaults to the
-                      current directory.
+      --search-dir    specify a root directory path to search a version file.
+                      defaults to the current directory.
       --tag-template  specify git tag format. defaults to 'v{version}'.
       --version       specify version manually
 
@@ -43,7 +43,7 @@ Example
 ============================================
 .. code-block::
 
-    $ python setup.py release
+    $ python3 setup.py release
     running release
     [get the version from ./releasecmd/__version__.py]
     [create a git tag: v0.0.15]
@@ -60,7 +60,7 @@ You can specify a vesion manually by ``--version`` option:
 
 .. code-block::
 
-    $ python setup.py release --version 0.1.0
+    $ python3 setup.py release --version 0.1.0
     [create a git tag: v0.1.0]
     [push git tags]
     [upload packages to PyPI]
@@ -70,7 +70,7 @@ Create a GPG signed tag and upload packages
 ------------------------------------------------------
 .. code-block::
 
-    $ python setup.py release --sign
+    $ python3 setup.py release --sign
     running release
     [get the version from ./releasecmd/__version__.py]
     [create a .asc file for releasecmd-0.1.0.tar.gz]
@@ -84,7 +84,7 @@ Skip create a git tag and upload packages
 ------------------------------------------------------
 .. code-block::
 
-    $ python setup.py release --skip-tagging
+    $ python3 setup.py release --skip-tagging
     running release
     [get the version from ./releasecmd/__version__.py]
     [push git tags]
@@ -95,4 +95,4 @@ Skip create a git tag and upload packages
 Dependencies
 ============================================
 - Python 3.5+
-- ``git``
+- `Git <https://git-scm.com/>`__
