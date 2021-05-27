@@ -25,6 +25,29 @@ The ``release`` subcommand will do the followings:
 5. Upload package files to PyPI by using ``twine``
 
 
+Installation
+============================================
+::
+
+    pip install releasecmd
+
+
+Usage
+============================================
+
+:setup.py:
+    .. code-block:: python
+
+        import setuptools
+
+        from releasecmd import ReleaseCommand
+
+        setuptools.setup(
+            ...
+            cmdclass={"release": ReleaseCommand},
+        )
+
+
 release command options
 ============================================
 ::
