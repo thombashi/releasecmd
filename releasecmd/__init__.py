@@ -88,7 +88,7 @@ class ReleaseCommand(setuptools.Command):
         from pkg_resources.extern.packaging.version import Version
 
         if not isinstance(parse_version(version), Version):
-            print("invalid version string: {}".format(version), file=sys.stderr)
+            print("[ERROR] invalid version string: {}".format(version), file=sys.stderr)
             sys.exit(errno.EINVAL)
 
     def __get_version(self) -> str:
@@ -136,7 +136,7 @@ class ReleaseCommand(setuptools.Command):
 
         result = subprocess.run(command, stderr=subprocess.PIPE, encoding="utf8")
         if result.returncode != 0:
-            print("[ERROR] {}".format(command_str))
+            print("[ERROR] {}".format(command_str), file=sys.stderr)
             if result.stderr:
                 print(result.stderr, file=sys.stderr)
             sys.exit(result.returncode)
