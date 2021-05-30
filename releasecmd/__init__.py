@@ -80,7 +80,7 @@ class ReleaseCommand(setuptools.Command):
             return
 
         print(
-            "{:s}/ directory not found. build the package first.".format(self.__DIST_DIR_NAME),
+            f"{self.__DIST_DIR_NAME:s}/ directory not found. build the package first.",
             file=sys.stderr,
         )
         sys.exit(errno.ENOENT)
@@ -90,7 +90,7 @@ class ReleaseCommand(setuptools.Command):
         from pkg_resources.extern.packaging.version import Version
 
         if not isinstance(parse_version(version), Version):
-            print("[ERROR] invalid version string: {}".format(version), file=sys.stderr)
+            print(f"[ERROR] invalid version string: {version}", file=sys.stderr)
             sys.exit(errno.EINVAL)
 
     def __get_version(self) -> str:
@@ -101,11 +101,11 @@ class ReleaseCommand(setuptools.Command):
             version = self.__extract_version_from_file(version_file)
 
             if version:
-                print("[get the version from {}]".format(version_file))
+                print(f"[get the version from {version_file}]")
                 return version
 
         print(
-            "[ERROR] version not found in the directory '{}'".format(self.search_dir),
+            f"[ERROR] version not found in the directory '{self.search_dir}'",
             file=sys.stderr,
         )
         sys.exit(errno.ENOENT)
@@ -118,7 +118,7 @@ class ReleaseCommand(setuptools.Command):
             sys.exit(errno.ENOENT)
 
         if not os.path.isfile(filepath):
-            print("file not found: {}".format(filepath), file=sys.stderr)
+            print(f"file not found: {filepath}", file=sys.stderr)
             sys.exit(errno.ENOENT)
 
         with open(filepath, encoding="utf8") as f:
@@ -130,7 +130,7 @@ class ReleaseCommand(setuptools.Command):
         return pkg_info.get("__version__")
 
     def __print_error(self, command_str: str, error_msg: str) -> None:
-        print("[ERROR] {}".format(command_str), file=sys.stderr)
+        print(f"[ERROR] {command_str}", file=sys.stderr)
         if error_msg:
             print(error_msg, file=sys.stderr)
 
@@ -138,7 +138,7 @@ class ReleaseCommand(setuptools.Command):
         command_str = " ".join(command)
 
         if self.dry_run:
-            print("dry run: {}".format(command_str))
+            print(f"dry run: {command_str}")
             return ""
 
         result = subprocess.run(command, stderr=subprocess.PIPE, encoding="utf8")
@@ -172,10 +172,10 @@ class ReleaseCommand(setuptools.Command):
         command_items = ["git", "tag"]  # type: List[str]
         extra_log = ""
         if self.sign:
-            command_items.extend(["--sign", "-m", "'GPG signed {} tag'".format(version)])
+            command_items.extend(["--sign", "-m", f"'GPG signed {version} tag'"])
             extra_log = " with gpg signing"
         command_items.append(tag)
-        print("[create a git tag{}: {}]".format(extra_log, tag))
+        print(f"[create a git tag{extra_log}: {tag}]")
         self.__call(command_items)
 
         print("[push git tags]")
@@ -184,9 +184,7 @@ class ReleaseCommand(setuptools.Command):
         )
 
     def __get_upload_files(self, version: str) -> List[str]:
-        version_regexp = re.compile(
-            r".+-{:s}.*(\.tar\.gz|\.whl)(\.asc$)?".format(re.escape(version))
-        )
+        version_regexp = re.compile(fr".+-{re.escape(version):s}.*(\.tar\.gz|\.whl)(\.asc$)?")
         upload_file_list = []  # type: List[str]
 
         for filename in os.listdir(self.__DIST_DIR_NAME):
@@ -201,13 +199,13 @@ class ReleaseCommand(setuptools.Command):
         if not self.sign:
             return
 
-        pkg_regexp = re.compile(r".+-{:s}.*(\.tar\.gz$|\.whl$)".format(re.escape(version)))
+        pkg_regexp = re.compile(fr".+-{re.escape(version):s}.*(\.tar\.gz$|\.whl$)")
 
         for filename in os.listdir(self.__DIST_DIR_NAME):
             if not pkg_regexp.search(filename):
                 continue
 
-            print("[create a .asc file for {}]".format(filename))
+            print(f"[create a .asc file for {filename}]")
 
             self.__call(
                 ["gpg", "--detach-sign", "--armor"] + [os.path.join(self.__DIST_DIR_NAME, filename)]

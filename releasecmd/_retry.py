@@ -25,7 +25,7 @@ def sleep_before_retry(attempt: int, retries: int) -> float:
     sleep_duration = _calc_backoff_time(attempt)
 
     print(
-        "Retrying in {:.2f} seconds ... (attempt={}/{})".format(sleep_duration, attempt, retries),
+        f"Retrying in {sleep_duration:.2f} seconds ... (attempt={attempt}/{retries})",
         file=sys.stderr,
     )
 
