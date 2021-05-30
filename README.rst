@@ -18,12 +18,13 @@ a subclass of ``setuptools.Command`` class.
 The ``release`` subcommand will do the followings:
 
 1. Find a file that defined the package version (e.g. ``<package>/__init__.py``)
-2. Create ``.asc`` files if ``--sign`` option is specified
+2. Create ``.asc`` (ASCII-armored signature) files of the package binary files if ``--sign`` option is specified
+    - https://www.gnupg.org/gph/en/manual/x135.html
 3. Create a git tag from the package version information
     - GPG signing to the git tag if ``--sign`` option is specified
 4. Push git tags
 5. Upload package files to PyPI by using ``twine``
-
+    - uploading for both the package binaries and ``.asc`` files
 
 Installation
 ============================================
@@ -117,5 +118,5 @@ Skip create a git tag and upload packages
 
 Dependencies
 ============================================
-- Python 3.5+
+- Python 3.6+
 - `Git <https://git-scm.com/>`__
