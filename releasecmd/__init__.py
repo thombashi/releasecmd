@@ -134,16 +134,18 @@ class ReleaseCommand(setuptools.Command):
         if error_msg:
             print(error_msg, file=sys.stderr)
 
-    def __call(self, command: List[str], retry: Optional[Retry] = None) -> str:
+    def __call(
+        self, command: List[str], retry: Optional[Retry] = None
+    ) -> subprocess.CompletedProcess:
         command_str = " ".join(command)
 
         if self.dry_run:
             print(f"dry run: {command_str}")
-            return ""
+            return subprocess.CompletedProcess(args=[], returncode=0, stdout="", stderr="")
 
         result = subprocess.run(command, stderr=subprocess.PIPE, encoding="utf8")
         if result.returncode == 0:
-            return result.stdout
+            return result
 
         if not retry:
             self.__print_error(command_str, error_msg=result.stderr)
@@ -155,7 +157,7 @@ class ReleaseCommand(setuptools.Command):
 
             result = subprocess.run(command, stderr=subprocess.PIPE, encoding="utf8")
             if result.returncode == 0 or result.returncode in retry.no_retry_returncodes:
-                return result.stdout
+                return result
 
         sys.exit(result.returncode)
 
