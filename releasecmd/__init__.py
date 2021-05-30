@@ -171,15 +171,11 @@ class ReleaseCommand(setuptools.Command):
 
         command_items = ["git", "tag"]  # type: List[str]
         extra_log = ""
-
         if self.sign:
             command_items.extend(["--sign", "-m", "'GPG signed {} tag'".format(version)])
             extra_log = " with gpg signing"
-
-        print("[create a git tag{}: {}]".format(extra_log, tag))
-
         command_items.append(tag)
-
+        print("[create a git tag{}: {}]".format(extra_log, tag))
         self.__call(command_items)
 
         print("[push git tags]")
