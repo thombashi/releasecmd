@@ -12,6 +12,7 @@ from typing import Dict, Generator, List, Optional
 import setuptools
 
 from .__version__ import __author__, __copyright__, __email__, __license__, __version__
+from ._retry import Retry, sleep_before_retry
 
 
 class ReleaseCommand(setuptools.Command):
@@ -33,6 +34,7 @@ class ReleaseCommand(setuptools.Command):
     ]
 
     __DIST_DIR_NAME = "dist"
+    __TAG_ALREADY_EXISTS = 128
 
     def initialize_options(self) -> None:
         self.skip_tagging = False
@@ -132,7 +134,7 @@ class ReleaseCommand(setuptools.Command):
         if error_msg:
             print(error_msg, file=sys.stderr)
 
-    def __call(self, command: List[str]) -> None:
+    def __call(self, command: List[str], retry: Optional[Retry] = None) -> None:
         command_str = " ".join(command)
 
         if self.dry_run:
@@ -140,11 +142,22 @@ class ReleaseCommand(setuptools.Command):
             return
 
         result = subprocess.run(command, stderr=subprocess.PIPE, encoding="utf8")
-        if result.returncode != 0:
-            print("[ERROR] {}".format(command_str), file=sys.stderr)
-            if result.stderr:
-                print(result.stderr, file=sys.stderr)
+        if result.returncode == 0:
+            return
+
+        if not retry:
+            self.__print_error(command_str, error_msg=result.stderr)
             sys.exit(result.returncode)
+
+        for i in range(retry.total):
+            self.__print_error(command_str, error_msg=result.stderr)
+            sleep_before_retry(attempt=i + 1, retries=retry.total)
+
+            result = subprocess.run(command, stderr=subprocess.PIPE, encoding="utf8")
+            if result.returncode == 0 or result.returncode in retry.no_retry_returncodes:
+                return
+
+        sys.exit(result.returncode)
 
     def __create_git_tag(self, version: str) -> None:
         tag = self.tag_template.format(version=version)
@@ -167,7 +180,9 @@ class ReleaseCommand(setuptools.Command):
         self.__call(command_items)
 
         print("[push git tags]")
-        self.__call(["git", "push", "--tags"])
+        self.__call(
+            ["git", "push", "--tags"], retry=Retry(no_retry_returncodes=[self.__TAG_ALREADY_EXISTS])
+        )
 
     def __get_upload_files(self, version: str) -> List[str]:
         version_regexp = re.compile(
@@ -201,7 +216,7 @@ class ReleaseCommand(setuptools.Command):
 
     def __upload_package(self, upload_file_list: List[str]) -> None:
         print("[upload packages to PyPI]")
-        self.__call(["twine", "upload"] + upload_file_list)
+        self.__call(["twine", "upload"] + upload_file_list, retry=Retry())
 
     def __traverse_version_file(self) -> Generator[Optional[str], None, None]:
         exclude_regexp_list = [
