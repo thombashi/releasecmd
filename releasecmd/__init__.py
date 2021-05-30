@@ -127,6 +127,11 @@ class ReleaseCommand(setuptools.Command):
 
         return pkg_info.get("__version__")
 
+    def __print_error(self, command_str: str, error_msg: str) -> None:
+        print("[ERROR] {}".format(command_str), file=sys.stderr)
+        if error_msg:
+            print(error_msg, file=sys.stderr)
+
     def __call(self, command: List[str]) -> None:
         command_str = " ".join(command)
 
