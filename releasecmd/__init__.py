@@ -171,6 +171,14 @@ class ReleaseCommand(setuptools.Command):
         print("[pull git tags]")
         self.__call(["git", "pull", "--tags"], retry=Retry())
 
+        print("[check existing git tags]")
+        result = self.__call(
+            ["git", "ls-remote", "--exit-code", "origin", f"refs/tags/{tag}"], retry=Retry()
+        )
+        if result.returncode == 2:
+            print("[ERROR] {} tag already exists", file=sys.stderr)
+            sys.exit(1)
+
         command_items = ["git", "tag"]  # type: List[str]
         extra_log = ""
         if self.sign:
