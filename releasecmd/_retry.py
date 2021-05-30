@@ -8,10 +8,10 @@ class Retry:
     def __init__(self, total: int = 3, no_retry_returncodes: Optional[List[int]] = None) -> None:
         self.total = total
 
-        if not no_retry_returncodes:
-            self.no_retry_returncodes = []
-        else:
+        if no_retry_returncodes:
             self.no_retry_returncodes = no_retry_returncodes
+        else:
+            self.no_retry_returncodes = []
 
 
 def _calc_backoff_time(attempt: int, backoff_factor: float = 0.5, jitter: float = 0.5) -> float:
