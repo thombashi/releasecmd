@@ -144,22 +144,23 @@ class ReleaseCommand(setuptools.Command):
             return subprocess.CompletedProcess(args=[], returncode=0, stdout="", stderr="")
 
         result = subprocess.run(command, stderr=subprocess.PIPE, encoding="utf8")
-        if result.returncode == 0:
+        returncode = result.returncode
+        if returncode == 0 or (retry and returncode in retry.no_retry_returncodes):
             return result
 
-        if not retry:
+        if retry is None:
             self.__print_error(command_str, error_msg=result.stderr)
-            sys.exit(result.returncode)
+            sys.exit(returncode)
 
         for i in range(retry.total):
             self.__print_error(command_str, error_msg=result.stderr)
             sleep_before_retry(attempt=i + 1, retries=retry.total)
 
             result = subprocess.run(command, stderr=subprocess.PIPE, encoding="utf8")
-            if result.returncode == 0 or result.returncode in retry.no_retry_returncodes:
+            if returncode == 0 or returncode in retry.no_retry_returncodes:
                 return result
 
-        sys.exit(result.returncode)
+        sys.exit(returncode)
 
     def __create_git_tag(self, version: str) -> None:
         tag = self.tag_template.format(version=version)
@@ -172,10 +173,12 @@ class ReleaseCommand(setuptools.Command):
         self.__call(["git", "pull", "--tags"], retry=Retry())
 
         print("[check existing git tags]")
+        TAG_NOT_FOUND = 2
         result = self.__call(
-            ["git", "ls-remote", "--exit-code", "origin", f"refs/tags/{tag}"], retry=Retry()
+            ["git", "ls-remote", "--exit-code", "origin", f"refs/tags/{tag}"],
+            retry=Retry(no_retry_returncodes=[TAG_NOT_FOUND]),
         )
-        if result.returncode == 2:
+        if result.returncode == 0:
             print("[ERROR] {} tag already exists", file=sys.stderr)
             sys.exit(1)
 
