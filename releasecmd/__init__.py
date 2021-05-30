@@ -166,6 +166,9 @@ class ReleaseCommand(setuptools.Command):
             print("skip git tagging")
             return
 
+        print("[pull git tags]")
+        self.__call(["git", "pull", "--tags"], retry=Retry())
+
         command_items = ["git", "tag"]  # type: List[str]
         extra_log = ""
 
