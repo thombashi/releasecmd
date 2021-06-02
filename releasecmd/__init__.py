@@ -229,11 +229,20 @@ class ReleaseCommand(setuptools.Command):
         self.__call(["twine", "upload"] + upload_file_list, retry=Retry())
 
     def __traverse_version_file(self) -> Generator[Optional[str], None, None]:
-        exclude_regexp_list = [
-            re.compile("/build/.+"),
-            re.compile(re.escape("/.eggs/")),
-            re.compile(re.escape(".tox/")),
-        ]
+        regexp_exclude_dirs = re.compile(
+            "|".join(
+                [
+                    "/build/.+",
+                    re.escape("/.eggs/"),
+                    re.escape(".egg-info/"),
+                    re.escape(".mypy_cache/"),
+                    re.escape(".nox/"),
+                    re.escape(".tox/"),
+                    re.escape(".pyre/"),
+                    re.escape(".pytest_cache/"),
+                ]
+            )
+        )
         ver_file_candidate_regexp = re.compile(r"^_.+_\.py$")
 
         for root, dirs, files in os.walk(self.search_dir):
@@ -241,7 +250,7 @@ class ReleaseCommand(setuptools.Command):
                 if ver_file_candidate_regexp.search(filename) is None:
                     continue
 
-                if any([exclude_regexp.search(root) for exclude_regexp in exclude_regexp_list]):
+                if regexp_exclude_dirs.search(root):
                     continue
 
                 yield os.path.join(root, filename)
