@@ -70,6 +70,9 @@ Example
     $ python3 setup.py release
     running release
     [get the version from ./releasecmd/__version__.py]
+    [pull git tags]
+    Already up to date.
+    [check existing git tags]
     [create a git tag: v0.0.15]
     [push git tags]
     [upload the package to PyPI]
@@ -86,6 +89,9 @@ You can specify a vesion manually by ``--version`` option:
 
     $ python3 setup.py release --version 0.1.0
     [create a git tag: v0.1.0]
+    [pull git tags]
+    Already up to date.
+    [check existing git tags]
     [push git tags]
     [upload packages to PyPI]
 
@@ -99,6 +105,9 @@ Create a GPG signed tag and upload packages
     [get the version from ./releasecmd/__version__.py]
     [create a .asc file for releasecmd-0.1.0.tar.gz]
     [create a .asc file for releasecmd-0.1.0-py2.py3-none-any.whl]
+    [pull git tags]
+    Already up to date.
+    [check existing git tags]
     [create a git tag with gpg signing: v0.1.0]
     [push git tags]
     [upload packages to PyPI]
@@ -111,7 +120,7 @@ Skip create a git tag and upload packages
     $ python3 setup.py release --skip-tagging
     running release
     [get the version from ./releasecmd/__version__.py]
-    [push git tags]
+    skip git tagging
     [upload packages to PyPI]
     ...
 
