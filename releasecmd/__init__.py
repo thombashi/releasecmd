@@ -89,9 +89,9 @@ class ReleaseCommand(setuptools.Command):
 
     def __validate_version(self, version: str) -> None:
         from pkg_resources import parse_version
-        from pkg_resources.extern.packaging.version import Version
+        from pkg_resources.extern import packaging  # type: ignore
 
-        if not isinstance(parse_version(version), Version):
+        if not isinstance(parse_version(version), packaging.version.Version):
             print(f"[ERROR] invalid version string: {version}", file=sys.stderr)
             sys.exit(errno.EINVAL)
 
