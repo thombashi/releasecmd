@@ -44,7 +44,7 @@ class ReleaseCommand(setuptools.Command):
         self.sign = False
         self.search_dir = "."
         self.tag_template = "v{version}"
-        self.version = None  # type: Optional[str]
+        self.version: Optional[str] = None
 
     def finalize_options(self) -> None:
         pass
@@ -113,7 +113,7 @@ class ReleaseCommand(setuptools.Command):
         sys.exit(errno.ENOENT)
 
     def __extract_version_from_file(self, filepath: Optional[str]) -> Optional[str]:
-        pkg_info = {}  # type: Dict[str, str]
+        pkg_info: Dict[str, str] = {}
 
         if not filepath:
             print("require a file path", file=sys.stderr)
@@ -184,7 +184,7 @@ class ReleaseCommand(setuptools.Command):
             print("[ERROR] {} tag already exists", file=sys.stderr)
             sys.exit(1)
 
-        command_items = ["git", "tag"]  # type: List[str]
+        command_items: List[str] = ["git", "tag"]
         extra_log = ""
         if self.sign:
             command_items.extend(["--sign", "-m", f"'GPG signed {version} tag'"])
@@ -200,7 +200,7 @@ class ReleaseCommand(setuptools.Command):
 
     def __get_upload_files(self, version: str) -> List[str]:
         version_regexp = re.compile(fr".+-{re.escape(version):s}.*(\.tar\.gz|\.whl)(\.asc$)?")
-        upload_file_list = []  # type: List[str]
+        upload_file_list: List[str] = []
 
         for filename in os.listdir(self.__DIST_DIR_NAME):
             if not version_regexp.search(filename):
