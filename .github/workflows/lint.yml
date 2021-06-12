@@ -2,15 +2,18 @@ name: Lint
 
 on: [push, pull_request]
 
+env:
+  PYTEST_DISCORD_WEBHOOK: ${{ secrets.PYTEST_DISCORD_WEBHOOK }}
+
 jobs:
   lint:
-    timeout-minutes: 20
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         python-version: [3.8]
         os: [ubuntu-latest]
+    timeout-minutes: 20
 
     steps:
       - uses: actions/checkout@v2
@@ -45,5 +48,3 @@ jobs:
       - name: Lint
         run: |
           make check
-        env:
-          PYTEST_DISCORD_WEBHOOK: ${{ secrets.PYTEST_DISCORD_WEBHOOK }}
