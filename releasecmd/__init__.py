@@ -21,6 +21,7 @@ class ReleaseCommand(setuptools.Command):
     # command class must provide 'user_options' attribute (a list of tuples)
     user_options = [
         ("skip-tagging", None, "skip a git tag creation"),
+        ("skip-uploading", None, "skip uploading packages to PyPI"),
         ("dry-run", None, "do no harm"),
         ("sign", None, "make a GPG-signed tag"),
         (
@@ -38,6 +39,7 @@ class ReleaseCommand(setuptools.Command):
 
     def initialize_options(self) -> None:
         self.skip_tagging = False
+        self.skip_upload = False
         self.dry_run = False
         self.sign = False
         self.search_dir = "."
@@ -225,6 +227,10 @@ class ReleaseCommand(setuptools.Command):
             )
 
     def __upload_package(self, upload_file_list: List[str]) -> None:
+        if self.skip_upload:
+            print("skip uploading packages")
+            return
+
         print("[upload packages to PyPI]")
         self.__call(["twine", "upload"] + upload_file_list, retry=Retry())
 
