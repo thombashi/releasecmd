@@ -8,6 +8,10 @@ releasecmd
     :target: https://pypi.org/project/releasecmd
     :alt: Supported Python versions
 
+.. image:: https://github.com/thombashi/releasecmd/actions/workflows/lint.yml/badge.svg
+    :target: https://github.com/thombashi/releasecmd/actions/workflows/lint.yml
+    :alt: Lint result
+
 Summary
 ---------
 ``releasecmd`` is a ``release`` subcommand for ``setup.py`` (``setuptools.setup``).
@@ -17,7 +21,7 @@ The subcommand class (``releasecmd.ReleaseCommand``) is implemented as
 a subclass of ``setuptools.Command`` class.
 The ``release`` subcommand will do the followings:
 
-1. Find a file that defined the package version (e.g. ``<package>/__init__.py``)
+1. Find a file that defined the package version (``__version__`` variable)
 2. Create ``.asc`` (ASCII-armored signature) files of the package binary files if ``--sign`` option is specified
     - https://www.gnupg.org/gph/en/manual/x135.html
 3. Create a git tag from the package version information
@@ -47,20 +51,6 @@ Usage
             ...
             cmdclass={"release": ReleaseCommand},
         )
-
-
-release command options
-============================================
-::
-
-    Options for 'ReleaseCommand' command:
-      --skip-tagging  skip a git tag creation
-      --dry-run       do no harm
-      --sign          make a GPG-signed tag
-      --search-dir    specify a root directory path to search a version file.
-                      defaults to the current directory.
-      --tag-template  specify git tag format. defaults to 'v{version}'.
-      --version       specify version manually
 
 
 Example
@@ -123,6 +113,21 @@ Skip create a git tag and upload packages
     skip git tagging
     [upload packages to PyPI]
     ...
+
+
+release command options
+============================================
+::
+
+    Options for 'ReleaseCommand' command:
+        --skip-tagging    skip a git tag creation
+        --skip-uploading  skip uploading packages to PyPI
+        --dry-run         do no harm
+        --sign            make a GPG-signed tag
+        --search-dir      specify a root directory path to search a version file.
+                        defaults to the current directory.
+        --tag-template    specify git tag format. defaults to 'v{version}'.
+        --version         specify version manually
 
 
 Dependencies
