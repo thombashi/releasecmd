@@ -6,7 +6,7 @@ from typing import List, Optional
 
 class Retry:
     def __init__(
-        self, max_attempts: int = 3, no_retry_returncodes: Optional[List[int]] = None
+        self, max_attempts: int = 5, no_retry_returncodes: Optional[List[int]] = None
     ) -> None:
         self.max_attempts = max_attempts
 
