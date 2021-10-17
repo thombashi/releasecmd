@@ -5,8 +5,10 @@ from typing import List, Optional
 
 
 class Retry:
-    def __init__(self, total: int = 3, no_retry_returncodes: Optional[List[int]] = None) -> None:
-        self.total = total
+    def __init__(
+        self, max_attempts: int = 3, no_retry_returncodes: Optional[List[int]] = None
+    ) -> None:
+        self.max_attempts = max_attempts
 
         if no_retry_returncodes:
             self.no_retry_returncodes = no_retry_returncodes

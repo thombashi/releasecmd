@@ -154,9 +154,9 @@ class ReleaseCommand(setuptools.Command):
             self.__print_error(command_str, error_msg=result.stderr)
             sys.exit(returncode)
 
-        for i in range(retry.total):
+        for i in range(retry.max_attempts):
             self.__print_error(command_str, error_msg=result.stderr)
-            sleep_before_retry(attempt=i + 1, max_attempts=retry.total)
+            sleep_before_retry(attempt=i + 1, max_attempts=retry.max_attempts)
 
             result = subprocess.run(command, stderr=subprocess.PIPE, encoding="utf8")
             if returncode == 0 or returncode in retry.no_retry_returncodes:
