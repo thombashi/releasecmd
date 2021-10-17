@@ -21,11 +21,11 @@ def _calc_backoff_time(attempt: int, backoff_factor: float = 0.5, jitter: float 
     return sleep_duration
 
 
-def sleep_before_retry(attempt: int, retries: int) -> float:
+def sleep_before_retry(attempt: int, max_attempts: int) -> float:
     sleep_duration = _calc_backoff_time(attempt)
 
     print(
-        f"Retrying in {sleep_duration:.2f} seconds ... (attempt={attempt}/{retries})",
+        f"Retrying in {sleep_duration:.2f} seconds ... (attempt={attempt}/{max_attempts})",
         file=sys.stderr,
     )
 
