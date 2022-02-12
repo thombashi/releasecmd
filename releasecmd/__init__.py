@@ -171,8 +171,8 @@ class ReleaseCommand(setuptools.Command):
             print("skip git tagging")
             return
 
-        print("[pull git tags]")
-        self.__call(["git", "pull", "--tags"], retry=Retry())
+        print("[fetch git tags]")
+        self.__call(["git", "fetch", "--tags"], retry=Retry())
 
         print("[check existing git tags]")
         TAG_NOT_FOUND = 2
