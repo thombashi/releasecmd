@@ -39,7 +39,7 @@ class ReleaseCommand(setuptools.Command):
 
     def initialize_options(self) -> None:
         self.skip_tagging = False
-        self.skip_upload = False
+        self.skip_uploading = False
         self.dry_run = False
         self.sign = False
         self.search_dir = "."
@@ -227,7 +227,7 @@ class ReleaseCommand(setuptools.Command):
             )
 
     def __upload_package(self, upload_file_list: List[str]) -> None:
-        if self.skip_upload:
+        if self.skip_uploading:
             print("skip uploading packages")
             return
 
