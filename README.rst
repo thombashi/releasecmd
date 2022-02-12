@@ -68,12 +68,12 @@ Example
     [upload the package to PyPI]
     ...
 
-prerequisite: package binaries must bein in the ``dist/`` directory.
+prerequisite: package binaries must be in the ``dist/`` directory.
 
 
 Specify version manually
 ------------------------------------------------------
-You can specify a vesion manually by ``--version`` option:
+You can specify a version manually by ``--version`` option:
 
 .. code-block::
 
