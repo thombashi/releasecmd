@@ -199,7 +199,7 @@ class ReleaseCommand(setuptools.Command):
         )
 
     def __get_upload_files(self, version: str) -> List[str]:
-        version_regexp = re.compile(fr".+-{re.escape(version):s}.*(\.tar\.gz|\.whl)(\.asc$)?")
+        version_regexp = re.compile(rf".+-{re.escape(version):s}.*(\.tar\.gz|\.whl)(\.asc$)?")
         upload_file_list: List[str] = []
 
         for filename in os.listdir(self.__DIST_DIR_NAME):
@@ -214,7 +214,7 @@ class ReleaseCommand(setuptools.Command):
         if not self.sign:
             return
 
-        pkg_regexp = re.compile(fr".+-{re.escape(version):s}.*(\.tar\.gz$|\.whl$)")
+        pkg_regexp = re.compile(rf".+-{re.escape(version):s}.*(\.tar\.gz$|\.whl$)")
 
         for filename in os.listdir(self.__DIST_DIR_NAME):
             if not pkg_regexp.search(filename):
