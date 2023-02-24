@@ -15,6 +15,16 @@ from .__version__ import __author__, __copyright__, __email__, __license__, __ve
 from ._retry import Retry, sleep_before_retry
 
 
+__all__ = (
+    "__author__",
+    "__copyright__",
+    "__email__",
+    "__license__",
+    "__version__",
+    "ReleaseCommand",
+)
+
+
 class ReleaseCommand(setuptools.Command):
     description = "create a Git tag and push, and then upload packages to PyPI"
 
