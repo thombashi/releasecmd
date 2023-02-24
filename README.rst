@@ -15,10 +15,9 @@ releasecmd
 Summary
 ---------
 ``releasecmd`` is a ``release`` subcommand for ``setup.py`` (``setuptools.setup``).
-The subcommand create a git tag and push, and upload packages to ``PyPI``.
+The subcommand creates a git tag and pushes and uploads packages to ``PyPI``.
 
-The subcommand class (``releasecmd.ReleaseCommand``) is implemented as
-a subclass of ``setuptools.Command`` class.
+The subcommand class (``releasecmd.ReleaseCommand``) is implemented as a subclass of ``setuptools.Command`` class.
 The ``release`` subcommand will do the followings:
 
 1. Find a file that defined the package version (``__version__`` variable)
@@ -132,5 +131,5 @@ release command options
 
 Dependencies
 ============================================
-- Python 3.6+
+- Python 3.7+
 - `Git <https://git-scm.com/>`__
