@@ -51,6 +51,9 @@ jobs:
       - name: Install dependencies
         run: make setup-ci
 
+      - name: Build
+        run: make build
+
       - name: Install the package
         run: pip install .
 
