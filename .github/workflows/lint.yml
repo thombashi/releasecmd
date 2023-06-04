@@ -58,4 +58,4 @@ jobs:
         run: pip install .
 
       - name: Dry run
-        run: python3 setup.py release --verbose --dry-run
+        run: python3 setup.py release --skip-tagging --verbose --dry-run
