@@ -35,6 +35,7 @@ class ReleaseCommand(setuptools.Command):
         ("skip-uploading", None, "skip uploading packages to PyPI"),
         ("dry-run", None, "do no harm"),
         ("sign", None, "[deprecated from PyPI] make a GPG-signed tag"),
+        ("verbose", None, "show verbose output"),
         (
             "search-dir=",
             None,
@@ -53,6 +54,7 @@ class ReleaseCommand(setuptools.Command):
         self.skip_uploading = False
         self.dry_run = False
         self.sign = False
+        self.verbose = False
         self.search_dir = "."
         self.tag_template = "v{version}"
         self.version: Optional[str] = None
@@ -156,6 +158,9 @@ class ReleaseCommand(setuptools.Command):
             print(f"dry run: {command_str}")
             return subprocess.CompletedProcess(args=[], returncode=0, stdout="", stderr="")
 
+        if self.verbose:
+            print(f"execute: {command_str}")
+
         result = subprocess.run(command, stderr=subprocess.PIPE, encoding="utf8")
         returncode = result.returncode
         if returncode == 0 or (retry and returncode in retry.no_retry_returncodes):
@@ -221,7 +226,10 @@ class ReleaseCommand(setuptools.Command):
             if not version_regexp.search(filename):
                 continue
 
-            upload_file_list.append(os.path.join(self.__DIST_DIR_NAME, filename))
+            upload_filepath = os.path.join(self.__DIST_DIR_NAME, filename)
+            if self.verbose:
+                print(f"found a file: {os.path.abspath(upload_filepath)}")
+            upload_file_list.append(upload_filepath)
 
         return upload_file_list
 
@@ -247,7 +255,10 @@ class ReleaseCommand(setuptools.Command):
             return
 
         print("[upload packages to PyPI]")
-        self.__call(["twine", "upload"] + upload_file_list, retry=Retry())
+        cmd = ["twine", "upload"]
+        if self.verbose:
+            cmd += ["--verbose"]
+        self.__call(cmd + upload_file_list, retry=Retry())
 
     def __traverse_version_file(self) -> Generator[Optional[str], None, None]:
         regexp_exclude_dirs = re.compile(
