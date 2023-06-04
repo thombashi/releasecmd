@@ -197,7 +197,7 @@ class ReleaseCommand(setuptools.Command):
             retry=Retry(no_retry_returncodes=[TAG_NOT_FOUND]),
         )
         if result.returncode == 0:
-            print("[ERROR] {} tag already exists", file=sys.stderr)
+            print(f"[ERROR] {tag} tag already exists", file=sys.stderr)
             sys.exit(1)
 
         command_items: List[str] = ["git", "tag"]
