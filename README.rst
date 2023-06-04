@@ -119,14 +119,15 @@ release command options
 ::
 
     Options for 'ReleaseCommand' command:
-        --skip-tagging    skip a git tag creation
-        --skip-uploading  skip uploading packages to PyPI
-        --dry-run         do no harm
-        --sign            make a GPG-signed tag
-        --search-dir      specify a root directory path to search a version file.
+      --skip-tagging    skip a git tag creation
+      --skip-uploading  skip uploading packages to PyPI
+      --dry-run         do no harm
+      --sign            [deprecated from PyPI] make a GPG-signed tag
+      --verbose         show verbose output
+      --search-dir      specify a root directory path to search a version file.
                         defaults to the current directory.
-        --tag-template    specify git tag format. defaults to 'v{version}'.
-        --version         specify version manually
+      --tag-template    specify git tag format. defaults to 'v{version}'.
+      --version         specify version manually
 
 
 Dependencies
