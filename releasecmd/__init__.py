@@ -7,6 +7,7 @@ import os
 import re
 import subprocess
 import sys
+import warnings
 from typing import Dict, Generator, List, Optional
 
 import setuptools
@@ -33,7 +34,7 @@ class ReleaseCommand(setuptools.Command):
         ("skip-tagging", None, "skip a git tag creation"),
         ("skip-uploading", None, "skip uploading packages to PyPI"),
         ("dry-run", None, "do no harm"),
-        ("sign", None, "make a GPG-signed tag"),
+        ("sign", None, "[deprecated from PyPI] make a GPG-signed tag"),
         (
             "search-dir=",
             None,
@@ -197,6 +198,10 @@ class ReleaseCommand(setuptools.Command):
         command_items: List[str] = ["git", "tag"]
         extra_log = ""
         if self.sign:
+            warnings.warn(
+                "support for GPG signatures has been removed from PyPI", DeprecationWarning
+            )
+
             command_items.extend(["--sign", "-m", f"'GPG signed {version} tag'"])
             extra_log = " with gpg signing"
         command_items.append(tag)
