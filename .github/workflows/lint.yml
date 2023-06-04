@@ -1,4 +1,4 @@
-name: Lint
+name: Lint and Test
 
 on: [push, pull_request]
 
@@ -22,3 +22,37 @@ jobs:
 
       - name: Lint
         run: make check
+
+  unit-test:
+    runs-on: ${{ matrix.os }}
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.job }}-${{ matrix.os }}-${{ matrix.python-version }}
+      cancel-in-progress: true
+    timeout-minutes: 20
+
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.7', '3.8', '3.9', '3.10', '3.11']
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: |
+            setup.py
+            tox.ini
+
+      - name: Install dependencies
+        run: make setup-ci
+
+      - name: Install the package
+        run: pip install .
+
+      - name: Dry run
+        run: python3 setup.py release --verbose --dry-run
