@@ -56,7 +56,7 @@ class ReleaseCommand(setuptools.Command):
         self.sign = False
         self.verbose = False
         self.search_dir = "."
-        self.tag_template = "v{version}"
+        self.tag_template = "v{ver_str}"
         self.version: Optional[str] = None
 
     def finalize_options(self) -> None:
@@ -71,22 +71,22 @@ class ReleaseCommand(setuptools.Command):
 
         self.__validate_dist_dir()
 
-        version = self.__get_version()
-        self.__validate_version(version)
         self.__sign_package(version)
+        ver_str = self.__get_version()
+        self.__validate_version(ver_str)
 
-        upload_file_list = self.__get_upload_files(version)
+        upload_file_list = self.__get_upload_files(ver_str)
         if not upload_file_list:
             print(
                 (
-                    "package files not found in '{dir:s}/' that matches the version ({version:s}) "
+                    "package files not found in '{dir:s}/' that matches the version ({ver_str:s}) "
                     + "to upload"
-                ).format(dir=self.__DIST_DIR_NAME, version=version),
+                ).format(dir=self.__DIST_DIR_NAME, ver_str=ver_str),
                 file=sys.stderr,
             )
             sys.exit(errno.ENOENT)
 
-        self.__create_git_tag(version)
+        self.__create_git_tag(ver_str)
         self.__upload_package(upload_file_list)
 
     def __validate_dist_dir(self) -> None:
@@ -99,12 +99,12 @@ class ReleaseCommand(setuptools.Command):
         )
         sys.exit(errno.ENOENT)
 
-    def __validate_version(self, version: str) -> None:
+    def __validate_version(self, ver_str: str) -> None:
         from pkg_resources import parse_version
         from pkg_resources.extern import packaging  # type: ignore
 
-        if not isinstance(parse_version(version), packaging.version.Version):
-            print(f"[ERROR] invalid version string: {version}", file=sys.stderr)
+        if not isinstance(parse_version(ver_str), packaging.version.Version):
+            print(f"[ERROR] invalid version string: {ver_str}", file=sys.stderr)
             sys.exit(errno.EINVAL)
 
     def __get_version(self) -> str:
@@ -112,11 +112,11 @@ class ReleaseCommand(setuptools.Command):
             return self.version
 
         for version_file in self.__traverse_version_file():
-            version = self.__extract_version_from_file(version_file)
+            ver_str = self.__extract_version_from_file(version_file)
 
-            if version:
+            if ver_str:
                 print(f"[get the version from {version_file}]")
-                return version
+                return ver_str
 
         print(
             f"[ERROR] version not found in the directory '{self.search_dir}'",
@@ -179,8 +179,8 @@ class ReleaseCommand(setuptools.Command):
 
         sys.exit(returncode)
 
-    def __create_git_tag(self, version: str) -> None:
-        tag = self.tag_template.format(version=version)
+    def __create_git_tag(self, ver_str: str) -> None:
+        tag = self.tag_template.format(ver_str=ver_str)
 
         if self.skip_tagging:
             print("skip git tagging")
@@ -202,7 +202,7 @@ class ReleaseCommand(setuptools.Command):
         git_cmd_items: List[str] = ["git", "tag"]
         extra_log = ""
         if self.sign:
-            git_cmd_items.extend(["--sign", "-m", f"'GPG signed {version} tag'"])
+            git_cmd_items.extend(["--sign", "-m", f"'GPG signed {ver_str} tag'"])
             extra_log = " with gpg signing"
         git_cmd_items.append(tag)
         print(f"[create a git tag{extra_log}: {tag}]")
@@ -213,8 +213,8 @@ class ReleaseCommand(setuptools.Command):
             ["git", "push", "--tags"], retry=Retry(no_retry_returncodes=[self.__TAG_ALREADY_EXISTS])
         )
 
-    def __get_upload_files(self, version: str) -> List[str]:
-        version_regexp = re.compile(rf".+-{re.escape(version):s}.*(\.tar\.gz|\.whl)(\.asc$)?")
+    def __get_upload_files(self, ver_str: str) -> List[str]:
+        version_regexp = re.compile(rf".+-{re.escape(ver_str):s}.*(\.tar\.gz|\.whl)(\.asc$)?")
         upload_file_list: List[str] = []
 
         for filename in os.listdir(self.__DIST_DIR_NAME):
@@ -228,13 +228,13 @@ class ReleaseCommand(setuptools.Command):
 
         return upload_file_list
 
-    def __sign_package(self, version: str) -> None:
+    def __sign_package(self, ver_str: str) -> None:
         if not self.sign:
             return
 
         warnings.warn("support for GPG signatures has been removed from PyPI", DeprecationWarning)
 
-        pkg_regexp = re.compile(rf".+-{re.escape(version):s}.*(\.tar\.gz$|\.whl$)")
+        pkg_regexp = re.compile(rf".+-{re.escape(ver_str):s}.*(\.tar\.gz$|\.whl$)")
 
         for filename in os.listdir(self.__DIST_DIR_NAME):
             if not pkg_regexp.search(filename):
