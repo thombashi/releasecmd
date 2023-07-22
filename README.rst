@@ -21,14 +21,11 @@ The subcommand class (``releasecmd.ReleaseCommand``) is implemented as a subclas
 The ``release`` subcommand will do the followings:
 
 1. Find a file that defined the package version (``__version__`` variable)
-2. Create ``.asc`` (ASCII-armored signature) files of the package binary files if ``--sign`` option is specified
-    - https://www.gnupg.org/gph/en/manual/x135.html
-3. Create a git tag from the package version information
+2. Create a git tag from the package version information
     - GPG signing to the git tag if ``--sign`` option is specified
-4. Push git tags
-5. Upload package files to PyPI by using ``twine``
-    - uploading for both the package binaries and ``.asc`` files
-
+3. Push git tags
+4. Upload package files to PyPI by using ``twine``
+ 
 Installation
 ============================================
 ::
@@ -92,8 +89,6 @@ Create a GPG signed tag and upload packages
     $ python3 setup.py release --sign
     running release
     [get the version from ./releasecmd/__version__.py]
-    [create a .asc file for releasecmd-0.1.0.tar.gz]
-    [create a .asc file for releasecmd-0.1.0-py2.py3-none-any.whl]
     [pull git tags]
     Already up to date.
     [check existing git tags]
