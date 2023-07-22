@@ -203,10 +203,6 @@ class ReleaseCommand(setuptools.Command):
         command_items: List[str] = ["git", "tag"]
         extra_log = ""
         if self.sign:
-            warnings.warn(
-                "support for GPG signatures has been removed from PyPI", DeprecationWarning
-            )
-
             command_items.extend(["--sign", "-m", f"'GPG signed {version} tag'"])
             extra_log = " with gpg signing"
         command_items.append(tag)
@@ -236,6 +232,10 @@ class ReleaseCommand(setuptools.Command):
     def __sign_package(self, version: str) -> None:
         if not self.sign:
             return
+
+        warnings.warn(
+            "support for GPG signatures has been removed from PyPI", DeprecationWarning
+        )
 
         pkg_regexp = re.compile(rf".+-{re.escape(version):s}.*(\.tar\.gz$|\.whl$)")
 
