@@ -233,9 +233,7 @@ class ReleaseCommand(setuptools.Command):
         if not self.sign:
             return
 
-        warnings.warn(
-            "support for GPG signatures has been removed from PyPI", DeprecationWarning
-        )
+        warnings.warn("support for GPG signatures has been removed from PyPI", DeprecationWarning)
 
         pkg_regexp = re.compile(rf".+-{re.escape(version):s}.*(\.tar\.gz$|\.whl$)")
 
