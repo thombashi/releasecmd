@@ -62,11 +62,7 @@ jobs:
             setup.py
             tox.ini
 
-      - name: Install dependencies
-        run: make setup-ci
-
-      - name: Build
-        run: make build
+      - run: make setup-ci
 
       - name: Install the package
         run: pip install .
