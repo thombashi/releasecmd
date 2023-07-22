@@ -11,6 +11,7 @@ import warnings
 from typing import Dict, Generator, List, Optional
 
 import setuptools
+from packaging.version import InvalidVersion, parse
 
 from .__version__ import __author__, __copyright__, __email__, __license__, __version__
 from ._retry import Retry, sleep_before_retry
@@ -99,10 +100,9 @@ class ReleaseCommand(setuptools.Command):
         sys.exit(errno.ENOENT)
 
     def __validate_version(self, ver_str: str) -> None:
-        from pkg_resources import parse_version
-        from pkg_resources.extern import packaging  # type: ignore
-
-        if not isinstance(parse_version(ver_str), packaging.version.Version):
+        try:
+            parse(ver_str)
+        except InvalidVersion:
             print(f"[ERROR] invalid version string: {ver_str}", file=sys.stderr)
             sys.exit(errno.EINVAL)
 
