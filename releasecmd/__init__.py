@@ -64,10 +64,9 @@ class ReleaseCommand(setuptools.Command):
 
     def run(self) -> None:
         """
-        1. create asc files (if specified --sign option)
-        2. create a git tag from version information in __version__.py
-        3. push git tags
-        4. upload package files to PyPI by using twine
+        1. create a git tag from version information in __version__.py
+        2. push git tags
+        3. upload package files to PyPI by using twine
         """
 
         self.__validate_dist_dir()
