@@ -71,7 +71,6 @@ class ReleaseCommand(setuptools.Command):
 
         self.__validate_dist_dir()
 
-        self.__sign_package(version)
         ver_str = self.__get_version()
         self.__validate_version(ver_str)
 
