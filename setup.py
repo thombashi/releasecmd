@@ -74,4 +74,5 @@ setuptools.setup(
         "Topic :: Utilities",
     ],
     cmdclass=get_release_command_class(),
+    zip_safe=False,
 )
