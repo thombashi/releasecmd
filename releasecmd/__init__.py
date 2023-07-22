@@ -200,14 +200,14 @@ class ReleaseCommand(setuptools.Command):
             print(f"[ERROR] {tag} tag already exists", file=sys.stderr)
             sys.exit(1)
 
-        command_items: List[str] = ["git", "tag"]
+        git_cmd_items: List[str] = ["git", "tag"]
         extra_log = ""
         if self.sign:
-            command_items.extend(["--sign", "-m", f"'GPG signed {version} tag'"])
+            git_cmd_items.extend(["--sign", "-m", f"'GPG signed {version} tag'"])
             extra_log = " with gpg signing"
-        command_items.append(tag)
+        git_cmd_items.append(tag)
         print(f"[create a git tag{extra_log}: {tag}]")
-        self.__call(command_items)
+        self.__call(git_cmd_items)
 
         print("[push git tags]")
         self.__call(
