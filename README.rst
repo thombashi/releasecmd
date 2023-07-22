@@ -8,8 +8,8 @@ releasecmd
     :target: https://pypi.org/project/releasecmd
     :alt: Supported Python versions
 
-.. image:: https://github.com/thombashi/releasecmd/actions/workflows/lint.yml/badge.svg
-    :target: https://github.com/thombashi/releasecmd/actions/workflows/lint.yml
+.. image:: https://github.com/thombashi/releasecmd/actions/workflows/ci.yml/badge.svg
+    :target: https://github.com/thombashi/releasecmd/actions/workflows/ci.yml
     :alt: Lint result
 
 Summary
@@ -122,7 +122,7 @@ release command options
       --skip-tagging    skip a git tag creation
       --skip-uploading  skip uploading packages to PyPI
       --dry-run         do no harm
-      --sign            [deprecated from PyPI] make a GPG-signed tag
+      --sign            make a GPG-signed git tag
       --verbose         show verbose output
       --search-dir      specify a root directory path to search a version file.
                         defaults to the current directory.
@@ -132,5 +132,5 @@ release command options
 
 Dependencies
 ============================================
-- Python 3.7+
+- Python 3.8+
 - `Git <https://git-scm.com/>`__
