@@ -34,7 +34,7 @@ class ReleaseCommand(setuptools.Command):
         ("skip-tagging", None, "skip a git tag creation"),
         ("skip-uploading", None, "skip uploading packages to PyPI"),
         ("dry-run", None, "do no harm"),
-        ("sign", None, "[deprecated from PyPI] make a GPG-signed tag"),
+        ("sign", None, "make a GPG-signed git tag"),
         ("verbose", None, "show verbose output"),
         (
             "search-dir=",
