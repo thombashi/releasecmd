@@ -79,5 +79,7 @@ jobs:
 
       - run: make setup
 
+      - run: make build
+
       - name: Dry run
         run: python3 setup.py release --skip-tagging --verbose --dry-run
