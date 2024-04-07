@@ -1,7 +1,7 @@
 releasecmd
 ============================================
 
-|PyPI pkg ver| |Supported Python versions| |CI status|
+|PyPI pkg ver| |Supported Python versions| |CI status| |CodeQL|
 
 .. |PyPI pkg ver| image:: https://badge.fury.io/py/releasecmd.svg
     :target: https://badge.fury.io/py/releasecmd
@@ -14,6 +14,10 @@ releasecmd
 .. |CI status| image:: https://github.com/thombashi/releasecmd/actions/workflows/ci.yml/badge.svg
     :target: https://github.com/thombashi/releasecmd/actions/workflows/ci.yml
     :alt: CI status
+
+.. |CodeQL| image:: https://github.com/thombashi/releasecmd/actions/workflows/github-code-scanning/codeql/badge.svg
+    :target: https://github.com/thombashi/releasecmd/actions/workflows/github-code-scanning/codeql
+    :alt: CodeQL
 
 Summary
 ---------
