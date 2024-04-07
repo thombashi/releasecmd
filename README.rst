@@ -1,16 +1,19 @@
 releasecmd
 ============================================
-.. image:: https://badge.fury.io/py/releasecmd.svg
+
+|PyPI pkg ver| |Supported Python versions| |CI status|
+
+.. |PyPI pkg ver| image:: https://badge.fury.io/py/releasecmd.svg
     :target: https://badge.fury.io/py/releasecmd
     :alt: PyPI package version
 
-.. image:: https://img.shields.io/pypi/pyversions/releasecmd.svg
+.. |Supported Python versions| image:: https://img.shields.io/pypi/pyversions/releasecmd.svg
     :target: https://pypi.org/project/releasecmd
     :alt: Supported Python versions
 
-.. image:: https://github.com/thombashi/releasecmd/actions/workflows/ci.yml/badge.svg
+.. |CI status| image:: https://github.com/thombashi/releasecmd/actions/workflows/ci.yml/badge.svg
     :target: https://github.com/thombashi/releasecmd/actions/workflows/ci.yml
-    :alt: Lint result
+    :alt: CI status
 
 Summary
 ---------
@@ -18,13 +21,13 @@ Summary
 The subcommand creates a git tag and pushes and uploads packages to ``PyPI``.
 
 The subcommand class (``releasecmd.ReleaseCommand``) is implemented as a subclass of ``setuptools.Command`` class.
-The ``release`` subcommand will do the followings:
+The ``release`` subcommand performs the following tasks:
 
-1. Find a file that defined the package version (``__version__`` variable)
-2. Create a git tag from the package version information
-    - GPG signing to the git tag if ``--sign`` option is specified
-3. Push git tags
-4. Upload package files to PyPI by using ``twine``
+1. Locates a file that defines the package version (``__version__`` variable)
+2. Creates a git tag using the package version information
+    - Optionally signs the git tag with GPG if the ``--sign`` option is specified
+3. Pushes the git tag
+4. Upload package files to PyPI using ``twine``.
  
 Installation
 ============================================
