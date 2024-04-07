@@ -210,7 +210,7 @@ class ReleaseCommand(setuptools.Command):
 
         print("[push git tags]")
         self.__call(
-            ["git", "push", "--tags"],
+            ["git", "push", "origin", tag],
             mutable=True,
             retry=Retry(no_retry_returncodes=[self.__TAG_ALREADY_EXISTS]),
         )
