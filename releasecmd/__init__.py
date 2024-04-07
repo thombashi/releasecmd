@@ -148,11 +148,11 @@ class ReleaseCommand(setuptools.Command):
             print(error_msg, file=sys.stderr)
 
     def __call(
-        self, command: List[str], retry: Optional[Retry] = None
+        self, command: List[str], mutable: bool, retry: Optional[Retry] = None
     ) -> subprocess.CompletedProcess:
         command_str = " ".join(command)
 
-        if self.dry_run:
+        if mutable and self.dry_run:
             print(f"dry run: {command_str}")
             return subprocess.CompletedProcess(args=[], returncode=0, stdout="", stderr="")
 
@@ -186,12 +186,13 @@ class ReleaseCommand(setuptools.Command):
             return
 
         print("[fetch git tags]")
-        self.__call(["git", "fetch", "--tags"], retry=Retry())
+        self.__call(["git", "fetch", "--tags"], mutable=False, retry=Retry())
 
         print("[check existing git tags]")
         TAG_NOT_FOUND = 2
         result = self.__call(
             ["git", "ls-remote", "--exit-code", "origin", f"refs/tags/{tag}"],
+            mutable=False,
             retry=Retry(no_retry_returncodes=[TAG_NOT_FOUND]),
         )
         if result.returncode == 0:
@@ -205,11 +206,13 @@ class ReleaseCommand(setuptools.Command):
             extra_log = " with gpg signing"
         git_cmd_items.append(tag)
         print(f"[create a git tag{extra_log}: {tag}]")
-        self.__call(git_cmd_items)
+        self.__call(git_cmd_items, mutable=True)
 
         print("[push git tags]")
         self.__call(
-            ["git", "push", "--tags"], retry=Retry(no_retry_returncodes=[self.__TAG_ALREADY_EXISTS])
+            ["git", "push", "--tags"],
+            mutable=True,
+            retry=Retry(no_retry_returncodes=[self.__TAG_ALREADY_EXISTS]),
         )
 
     def __get_upload_files(self, ver_str: str) -> List[str]:
@@ -242,7 +245,9 @@ class ReleaseCommand(setuptools.Command):
             print(f"[create a .asc file for {filename}]")
 
             self.__call(
-                ["gpg", "--detach-sign", "--armor"] + [os.path.join(self.__DIST_DIR_NAME, filename)]
+                ["gpg", "--detach-sign", "--armor"]
+                + [os.path.join(self.__DIST_DIR_NAME, filename)],
+                mutable=True,
             )
 
     def __upload_package(self, upload_file_list: List[str]) -> None:
@@ -254,7 +259,7 @@ class ReleaseCommand(setuptools.Command):
         cmd = ["twine", "upload"]
         if self.verbose:
             cmd += ["--verbose"]
-        self.__call(cmd + upload_file_list, retry=Retry())
+        self.__call(cmd + upload_file_list, mutable=True, retry=Retry())
 
     def __traverse_version_file(self) -> Generator[Optional[str], None, None]:
         regexp_exclude_dirs = re.compile(
