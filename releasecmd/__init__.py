@@ -8,7 +8,7 @@ import re
 import subprocess
 import sys
 import warnings
-from typing import Dict, Generator, List, Optional
+from typing import TYPE_CHECKING, Dict, Generator, List, Optional
 
 import setuptools
 from packaging.version import InvalidVersion, parse
@@ -16,6 +16,9 @@ from packaging.version import InvalidVersion, parse
 from .__version__ import __author__, __copyright__, __email__, __license__, __version__
 from ._retry import Retry, sleep_before_retry
 
+
+if TYPE_CHECKING:
+    import setuptools
 
 __all__ = (
     "__author__",
