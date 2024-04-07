@@ -24,7 +24,7 @@ jobs:
       image: ghcr.io/thombashi/python-ci:3.11
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - run: make build
 
@@ -40,7 +40,7 @@ jobs:
       image: ghcr.io/thombashi/python-ci:3.11
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Lint
         run: make check
@@ -59,7 +59,7 @@ jobs:
         os: [ubuntu-latest, macos-latest]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
