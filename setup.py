@@ -53,7 +53,10 @@ setuptools.setup(
         "Tracker": f"{REPOSITORY_URL:s}/issues",
     },
     python_requires=">=3.8",
-    install_requires=["twine"],
+    install_requires=[
+        "packaging",
+        "twine",
+    ],
     classifiers=[
         "Development Status :: 4 - Beta",
         "Framework :: Setuptools Plugin",
