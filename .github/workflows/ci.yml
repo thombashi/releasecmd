@@ -3,12 +3,12 @@ name: CI
 on:
   push:
     paths-ignore:
-      - '.gitignore'
-      - 'README.rst'
+      - ".gitignore"
+      - "README.rst"
   pull_request:
     paths-ignore:
-      - '.gitignore'
-      - 'README.rst'
+      - ".gitignore"
+      - "README.rst"
 
 env:
   PYTEST_DISCORD_WEBHOOK: ${{ secrets.PYTEST_DISCORD_WEBHOOK }}
@@ -38,10 +38,8 @@ jobs:
 
   lint:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
     concurrency:
-      group: ${{ github.workflow }}-${{ github.job }}
+      group: ${{ github.event_name }}-${{ github.workflow }}-${{ github.ref_name }}-lint
       cancel-in-progress: true
     timeout-minutes: 20
     container:
@@ -50,20 +48,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Lint
-        run: make check
+      - run: make check
 
   unit-test:
     runs-on: ${{ matrix.os }}
     concurrency:
-      group: ${{ github.workflow }}-${{ github.job }}-${{ matrix.os }}-${{ matrix.python-version }}
+      group: ${{ github.event_name }}-${{ github.workflow }}-${{ github.ref_name }}-ut-${{ matrix.os }}-${{ matrix.python-version }}
       cancel-in-progress: true
     timeout-minutes: 20
 
     strategy:
       fail-fast: false
       matrix:
-        python-version: ['3.8', '3.9', '3.10', '3.11']
+        python-version: ["3.8", "3.9", "3.10", "3.11"]
         os: [ubuntu-latest, macos-latest]
 
     steps:
@@ -78,12 +75,8 @@ jobs:
             setup.py
             tox.ini
 
-      - run: make setup-ci
-
       - name: Install the package
         run: pip install .
-
-      - run: make build
 
       - name: Dry run
         run: python3 setup.py release --skip-tagging --verbose --dry-run
