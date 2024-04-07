@@ -43,8 +43,6 @@ jobs:
       id-token: write
 
     steps:
-      - uses: actions/checkout@v4
-
       - uses: actions/download-artifact@v4
         with:
           name: dist
@@ -63,6 +61,11 @@ jobs:
           inputs: >-
             ./dist/*.tar.gz
             ./dist/*.whl
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sigstore
+          path: ./dist/*
 
   lint:
     runs-on: ubuntu-latest
