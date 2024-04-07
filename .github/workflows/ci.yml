@@ -14,19 +14,27 @@ env:
   PYTEST_DISCORD_WEBHOOK: ${{ secrets.PYTEST_DISCORD_WEBHOOK }}
 
 jobs:
-  build-package:
+  build-and-publish-package:
     runs-on: ubuntu-latest
     concurrency:
-      group: ${{ github.event_name }}-${{ github.workflow }}-${{ github.ref_name }}-build
+      group: ${{ github.event_name }}-${{ github.workflow }}-${{ github.ref_name }}-build-pkg
       cancel-in-progress: true
     timeout-minutes: 20
     container:
       image: ghcr.io/thombashi/python-ci:3.11
+    environment:
+      name: testpypi
 
     steps:
       - uses: actions/checkout@v4
 
       - run: make build
+
+      - name: Publish package to TestPyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+          repository-url: https://test.pypi.org/legacy/
 
   lint:
     runs-on: ubuntu-latest
