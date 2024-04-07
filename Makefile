@@ -21,7 +21,7 @@ fmt:
 
 .PHONY: release
 release:
-	$(PYTHON) setup.py release --sign --verbose
+	$(PYTHON) setup.py release --sign --verbose --skip-uploading
 	$(MAKE) clean
 
 .PHONY: setup-ci
