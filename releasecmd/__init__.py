@@ -78,21 +78,26 @@ class ReleaseCommand(setuptools.Command):
         ver_str = self.__get_version()
         self.__validate_version(ver_str)
 
-        upload_file_list = self.__get_upload_files(ver_str)
-        if not upload_file_list:
-            print(
-                (
-                    "package files not found in '{dir:s}/' that matches the version ({ver_str:s}) "
-                    + "to upload"
-                ).format(dir=self.__DIST_DIR_NAME, ver_str=ver_str),
-                file=sys.stderr,
-            )
-            sys.exit(errno.ENOENT)
+        upload_file_list: List[str] = []
+        if not self.skip_uploading:
+            upload_file_list = self.__get_upload_files(ver_str)
+            if not upload_file_list:
+                print(
+                    (
+                        "package files not found in '{dir:s}/' that matches the version ({ver_str:s}) "
+                        + "to upload"
+                    ).format(dir=self.__DIST_DIR_NAME, ver_str=ver_str),
+                    file=sys.stderr,
+                )
+                sys.exit(errno.ENOENT)
 
         self.__create_git_tag(ver_str)
         self.__upload_package(upload_file_list)
 
     def __validate_dist_dir(self) -> None:
+        if self.skip_uploading:
+            return
+
         if os.path.isdir(self.__DIST_DIR_NAME):
             return
 
