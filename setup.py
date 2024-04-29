@@ -38,7 +38,7 @@ setuptools.setup(
     author_email=pkg_info["__email__"],
     description=(
         "releasecmd is a release subcommand for setup.py (setuptools.setup)."
-        " the subcommand create a git tag and push, and upload packages to PyPI."
+        " the subcommand creates a git tag and pushes and uploads packages to PyPI."
     ),
     include_package_data=True,
     keywords=["release", "setuptools"],
