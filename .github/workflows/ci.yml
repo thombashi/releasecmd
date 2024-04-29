@@ -84,10 +84,10 @@ jobs:
 
       - run: make check
 
-  unit-test:
+  dry-run:
     runs-on: ${{ matrix.os }}
     concurrency:
-      group: ${{ github.event_name }}-${{ github.workflow }}-${{ github.ref_name }}-ut-${{ matrix.os }}-${{ matrix.python-version }}
+      group: ${{ github.event_name }}-${{ github.workflow }}-${{ github.ref_name }}-dry-run-${{ matrix.os }}-${{ matrix.python-version }}
       cancel-in-progress: true
     timeout-minutes: 20
 
