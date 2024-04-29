@@ -115,8 +115,19 @@ class ReleaseCommand(setuptools.Command):
             sys.exit(errno.EINVAL)
 
     def __get_version(self) -> str:
+        from importlib import metadata
+
         if self.version:
             return self.version
+
+        package_name = self.distribution.get_name()
+        if package_name:
+            version = metadata.version(package_name)
+            if version:
+                print(
+                    f"[get the version from an installed package: package={package_name}, version={version}]"
+                )
+                return version
 
         for version_file in self.__traverse_version_file():
             ver_str = self.__extract_version_from_file(version_file)
