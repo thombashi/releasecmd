@@ -55,6 +55,7 @@ setuptools.setup(
     python_requires=">=3.8",
     install_requires=[
         "packaging",
+        "setuptools",
         "twine",
     ],
     classifiers=[
