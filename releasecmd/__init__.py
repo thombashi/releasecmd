@@ -37,7 +37,7 @@ class ReleaseCommand(setuptools.Command):
     user_options = [
         ("skip-tagging", None, "skip a git tag creation"),
         ("skip-uploading", None, "skip uploading packages to PyPI"),
-        ("dry-run", None, "do no harm"),
+        ("dry-run", None, "don't actually do anything"),
         ("sign", None, "make a GPG-signed git tag"),
         ("verbose", None, "show verbose output"),
         (
@@ -46,8 +46,8 @@ class ReleaseCommand(setuptools.Command):
             "specify a root directory path to search a version file. "
             "defaults to the current directory.",
         ),
-        ("tag-template=", None, "specify git tag format. defaults to 'v{version}'."),
-        ("version=", None, "specify version manually"),
+        ("tag-template=", None, "specify git tag format. defaults to 'v{version}'"),
+        ("version=", None, "specify release version"),
     ]
 
     __DIST_DIR_NAME = "dist"
