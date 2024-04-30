@@ -32,3 +32,7 @@ setup-ci:
 setup: setup-ci
 	$(PYTHON) -m pip install -q --disable-pip-version-check --upgrade -e . setuptools
 	$(PYTHON) -m pip check
+
+.PHONY: test
+test:
+	$(PYTHON) setup.py release --skip-tagging --verbose --dry-run
