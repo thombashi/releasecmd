@@ -29,7 +29,7 @@ The ``release`` subcommand performs the following tasks:
 
 1. Detect the package version
     1. If specified with the ``--version`` option, use that version
-    2. Retrieve the package version from an installed package
+    2. Retrieve the package version from an installed package if the ``--use-installed-version`` option is specified
     3. Find a file that defines the package version (``__version__`` variable)
 2. Creates a git tag using the package version information
     - Optionally signs the git tag with GPG if the ``--sign`` option is specified
@@ -124,16 +124,17 @@ release command options
 ::
 
     Options for 'ReleaseCommand' command:
-      --skip-tagging    skip a git tag creation
-      --skip-uploading  skip uploading packages to PyPI
-      --dry-run         do no harm
-      --sign            make a GPG-signed git tag
-      --verbose         show verbose output
-      --search-dir      specify a root directory path to search a version file.
-                        defaults to the current directory.
-      --tag-template    specify git tag format. defaults to 'v{version}'.
-      --version         specify version manually
-
+      --skip-tagging           skip a git tag creation
+      --skip-uploading         skip uploading packages to PyPI
+      --dry-run                don't actually do anything
+      --sign                   make a GPG-signed git tag
+      --verbose                show verbose output
+      --search-dir             specify a root directory path to search a version
+                               file. defaults to the current directory.
+      --tag-template           specify git tag format. defaults to 'v{version}'
+      --use-installed-version  use an installed package version as a release
+                               version
+      --version                specify release version
 
 Dependencies
 ============================================
