@@ -27,7 +27,10 @@ The subcommand creates a git tag and pushes and uploads packages to ``PyPI``.
 The subcommand class (``releasecmd.ReleaseCommand``) is implemented as a subclass of ``setuptools.Command`` class.
 The ``release`` subcommand performs the following tasks:
 
-1. Locates a file that defines the package version (``__version__`` variable)
+1. Detect the package version
+    1. If specified with the ``--version`` option, use that version
+    2. Retrieve the package version from an installed package
+    3. Find a file that defines the package version (``__version__`` variable)
 2. Creates a git tag using the package version information
     - Optionally signs the git tag with GPG if the ``--sign`` option is specified
 3. Pushes the git tag
