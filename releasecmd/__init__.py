@@ -47,6 +47,7 @@ class ReleaseCommand(setuptools.Command):
             "defaults to the current directory.",
         ),
         ("tag-template=", None, "specify git tag format. defaults to 'v{version}'"),
+        ("use-installed-version", None, "use an installed package version as a release version"),
         ("version=", None, "specify release version"),
     ]
 
@@ -61,6 +62,7 @@ class ReleaseCommand(setuptools.Command):
         self.verbose = False
         self.search_dir = "."
         self.tag_template = "v{ver_str}"
+        self.use_installed_version = False
         self.version: Optional[str] = None
 
     def finalize_options(self) -> None:
@@ -120,14 +122,15 @@ class ReleaseCommand(setuptools.Command):
         if self.version:
             return self.version
 
-        package_name = self.distribution.get_name()
-        if package_name:
-            version = metadata.version(package_name)
-            if version:
-                print(
-                    f"[get the version from an installed package: package={package_name}, version={version}]"
-                )
-                return version
+        if self.use_installed_version:
+            package_name = self.distribution.get_name()
+            if package_name:
+                version = metadata.version(package_name)
+                if version:
+                    print(
+                        f"[get the version from an installed package: package={package_name}, version={version}]"
+                    )
+                    return version
 
         for version_file in self.__traverse_version_file():
             ver_str = self.__extract_version_from_file(version_file)

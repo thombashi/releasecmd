@@ -36,4 +36,4 @@ setup: setup-ci
 
 .PHONY: test
 test:
-	$(PYTHON) setup.py release --skip-tagging --verbose --dry-run
+	$(PYTHON) setup.py release --skip-tagging --verbose --use-installed-version --dry-run
