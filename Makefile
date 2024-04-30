@@ -21,11 +21,12 @@ fmt:
 
 .PHONY: release
 release:
-	$(PYTHON) setup.py release --sign --verbose --skip-uploading
+	$(PYTHON) setup.py release --sign --skip-uploading --verbose
 	$(MAKE) clean
 
 .PHONY: setup-ci
 setup-ci:
+	$(PYTHON) -m pip install -q --disable-pip-version-check --upgrade pip
 	$(PYTHON) -m pip install -q --disable-pip-version-check --upgrade tox
 
 .PHONY: setup
